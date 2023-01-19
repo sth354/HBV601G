@@ -1,0 +1,18 @@
+github
+intelliJ (spurja) - ná í nýjasta version
+
+
+
+
+- uppfæra database (einfaldari director)
+- ef fær hærri score, uppfæra ekki bæta við XXX
+
+
+
+- trivial pursuit, board game
+- offline leikur, einn sími
+- take turns playing game, 
+- every field on board has an action (question or blabla)
+- 
+
+- þarf að geyma eitthvað í gagnagrunn *** (score, búa til spurningar)
