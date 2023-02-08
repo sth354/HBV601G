@@ -1,7 +1,12 @@
 package hi.hbv601g.QuizGo;
 
 public class Question {
+
+    //TODO: Put @SerializedName("")
+    private int mId;
+    //TODO: Put @SerializedName("")
     private int mTextResId;
+    //TODO: Put @SerializedName("")
     private boolean mAnswerTrue;
 
     public Question(int textResId, boolean answerTrue) {

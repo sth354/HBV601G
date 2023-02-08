@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
+import hi.hbv601g.QuizGo.networking.NetworkCallback;
+import hi.hbv601g.QuizGo.networking.NetworkManager;
 import hi.hbv601g.quizgo.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +47,20 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
+
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getQuestions(new NetworkCallback<List<Question>>() {
+            @Override
+            public void onSuccess(List<Question> result) {
+                //TODO: Put result into questionBank
+                Log.d(TAG, "onSuccess: ");
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.e(TAG, "onFailure: " + errorString);
+            }
+        });
 
         updateQuestion();
 
