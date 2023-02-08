@@ -1,6 +1,5 @@
-package com.example.quizgo;
+package hi.hbv601g.QuizGo;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +8,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import hi.hbv601g.quizgo.R;
 
 public class MainActivity extends AppCompatActivity {
 

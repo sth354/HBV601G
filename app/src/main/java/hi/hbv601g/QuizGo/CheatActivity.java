@@ -1,4 +1,4 @@
-package com.example.quizgo;
+package hi.hbv601g.QuizGo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import hi.hbv601g.quizgo.R;
 
 public class CheatActivity extends AppCompatActivity {
 

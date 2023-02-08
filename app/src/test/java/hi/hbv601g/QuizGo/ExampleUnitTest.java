@@ -1,4 +1,4 @@
-package com.example.quizgo;
+package hi.hbv601g.QuizGo;
 
 import org.junit.Test;
 
