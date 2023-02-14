@@ -1,4 +1,4 @@
-package hi.hbv601g.QuizGo.networking;
+package hi.hbv601g.QuizGo.Networking;
 
 public interface NetworkCallback<T> {
 

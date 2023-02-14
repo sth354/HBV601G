@@ -1,21 +1,18 @@
-package hi.hbv601g.QuizGo.networking;
+package hi.hbv601g.QuizGo.Networking;
 
 import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.net.Proxy;
 import java.util.List;
 
-import hi.hbv601g.QuizGo.Question;
+import hi.hbv601g.QuizGo.Entities.Question;
 
 public class NetworkManager {
 

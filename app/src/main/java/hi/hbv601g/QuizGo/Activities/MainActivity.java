@@ -1,4 +1,4 @@
-package hi.hbv601g.QuizGo;
+package hi.hbv601g.QuizGo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import hi.hbv601g.QuizGo.networking.NetworkCallback;
-import hi.hbv601g.QuizGo.networking.NetworkManager;
+import hi.hbv601g.QuizGo.Entities.Question;
+import hi.hbv601g.QuizGo.Networking.NetworkCallback;
+import hi.hbv601g.QuizGo.Networking.NetworkManager;
 import hi.hbv601g.quizgo.R;
 
 public class MainActivity extends AppCompatActivity {

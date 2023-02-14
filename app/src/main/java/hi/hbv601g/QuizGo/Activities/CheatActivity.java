@@ -1,4 +1,4 @@
-package hi.hbv601g.QuizGo;
+package hi.hbv601g.QuizGo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

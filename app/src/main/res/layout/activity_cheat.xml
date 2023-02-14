@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="hi.hbv601g.QuizGo.CheatActivity">
+    tools:context="hi.hbv601g.QuizGo.Activities.CheatActivity">
 
     <TextView
         android:text="@string/cheat_confirm_text"
