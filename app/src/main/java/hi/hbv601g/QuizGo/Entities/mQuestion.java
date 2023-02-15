@@ -1,5 +1,7 @@
 package hi.hbv601g.QuizGo.Entities;
 
+import androidx.annotation.NonNull;
+
 public class mQuestion {
     private int mId;
     private int mDifficulty;
@@ -53,5 +55,11 @@ public class mQuestion {
 
     public void setAnswered(boolean answered) {
         mIsAnswered = answered;
+    }
+
+    @NonNull
+    public String toString() {
+        //TODO implement
+        return null;
     }
 }

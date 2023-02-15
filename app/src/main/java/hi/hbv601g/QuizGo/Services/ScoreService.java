@@ -21,7 +21,7 @@ public class ScoreService extends Service {
         //TODO implement
     }
 
-    public Score[] getSCore(User user) {
+    public Score[] getScores(User user) {
         //TODO implement
         return null;
     }

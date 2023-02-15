@@ -1,10 +1,11 @@
 package hi.hbv601g.QuizGo.Entities;
 
+import androidx.annotation.NonNull;
+
 public class User {
     private int mId;
     private String mUsername;
     private String mPassword;
-
 
     public User(int id, String username, String password) {
         mId = id;
@@ -34,5 +35,11 @@ public class User {
 
     public void setPassword(String password) {
         mPassword = password;
+    }
+
+    @NonNull
+    public String toString() {
+        //TODO implement
+        return null;
     }
 }

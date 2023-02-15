@@ -6,9 +6,13 @@ import android.os.Bundle;
 
 import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
+import hi.hbv601g.QuizGo.Services.UserService;
 import hi.hbv601g.quizgo.R;
 
 public class UserActivity extends AppCompatActivity {
+    private UserService mUserService;
+    private final int mMaxPlayers = 4;
+    private final int mMinPlayers = 2;
     private User[] mUsers;
 
     @Override
