@@ -13,6 +13,9 @@
     <string name="question_text4">This is the worst app ever!4</string>
     <string name="question_text5">This is the best app ever!5</string>
 
+
     <string name="cheat_confirm_text">Are you sure you want to cheat?</string>
     <string name="showAnswer_button">SHOW ANSWER</string>
+
+    <string name="mainMenu">Leikur</string>
 </resources>
