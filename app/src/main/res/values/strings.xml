@@ -17,5 +17,8 @@
     <string name="cheat_confirm_text">Are you sure you want to cheat?</string>
     <string name="showAnswer_button">SHOW ANSWER</string>
 
-    <string name="mainMenu">Leikur</string>
+    <string name="playGame">Play Game</string>
+    <string name="loadGame">Load Game</string>
+    <string name="choosePlayers">Choose Players</string>
+    <string name="viewScores">View Scores</string>
 </resources>
