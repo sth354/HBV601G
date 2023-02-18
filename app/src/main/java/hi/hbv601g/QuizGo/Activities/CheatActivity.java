@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import hi.hbv601g.quizgo.R;
+import hi.hbv601g.QuizGo.R;
 
 public class CheatActivity extends AppCompatActivity {
 

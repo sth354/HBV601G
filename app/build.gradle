@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'hi.hbv601g.quizgo'
+    namespace 'hi.hbv601g.QuizGo'
     compileSdk 33
 
     defaultConfig {
-        applicationId "hi.hbv601g.quizgo"
+        applicationId "hi.hbv601g.QuizGo"
         minSdk 24
         targetSdk 33
         versionCode 1

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import hi.hbv601g.QuizGo.Entities.User;
-import hi.hbv601g.quizgo.R;
+import hi.hbv601g.QuizGo.R;
 
 public class MenuActivity extends AppCompatActivity {
     private User[] users;

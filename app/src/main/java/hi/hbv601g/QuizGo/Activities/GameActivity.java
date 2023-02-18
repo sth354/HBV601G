@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Services.GameService;
-import hi.hbv601g.quizgo.R;
+import hi.hbv601g.QuizGo.R;
 
 public class GameActivity extends AppCompatActivity {
     private GameService mGameService;
