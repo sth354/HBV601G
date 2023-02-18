@@ -5,13 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import hi.hbv601g.QuizGo.Entities.Question;
-import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Services.GameService;
 import hi.hbv601g.quizgo.R;
 
 public class GameActivity extends AppCompatActivity {
     private GameService mGameService;
-    private Question mQuestions;
+    private Question[] mQuestions;
     private int mCurrentQuestion;
     private int[] mPlayerLocations;
 
@@ -22,8 +21,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public Question[] getQuestions() {
-        //TODO implement
-        return null;
+        return mGameService.getQuestions();
     }
 
     public void saveGame() {
