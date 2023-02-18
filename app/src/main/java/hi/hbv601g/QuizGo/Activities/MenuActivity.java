@@ -31,7 +31,7 @@ public class MenuActivity extends AppCompatActivity {
 
         loadButton = findViewById(R.id.loadButton);
 
-        loginButton = findViewById(R.id.loginButton);
+        loginButton = findViewById(R.id.userButton);
         loginButton.setOnClickListener(view -> {
             choosePlayers();
         });
@@ -65,6 +65,9 @@ public class MenuActivity extends AppCompatActivity {
             mUserIds[i] = user.getId();
             i++;
         }
+
+        Intent intent = new Intent(this, UserActivity.class);
+        startActivity(intent);
 
         //TODO implement
     }
