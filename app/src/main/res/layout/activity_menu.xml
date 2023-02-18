@@ -41,7 +41,7 @@
         app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/userButton"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="@string/choosePlayers"

@@ -20,6 +20,7 @@ public class GameService extends Service {
 
     private ScoreService mScoreService;
     private SaveStateService mSaveStateService;
+    private UserService mUserService;
     private User[] mUsers;
     private Score[] mScores;
     private int mDifficulty;

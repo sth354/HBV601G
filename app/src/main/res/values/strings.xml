@@ -6,6 +6,10 @@
     <string name="choosePlayers">Choose Players</string>
     <string name="viewScores">View Scores</string>
 
+    <string name="login">Login</string>
+    <string name="register">Create user</string>
+    <string name="back">Back</string>
+
     <string name="question">How many are the yule lads?</string>
     <string name="true_button">TRUE</string>
     <string name="false_button">FALSE</string>

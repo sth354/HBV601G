@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FF9A16"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="hi.hbv601g.QuizGo.Activities.UserActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/loginButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:allowUndo="false"
+        android:text="@string/login"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+</LinearLayout>
