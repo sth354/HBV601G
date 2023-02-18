@@ -16,7 +16,7 @@ import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
     //TODO get database to replace dummy users
-    private List<User> mDummyUsers = new ArrayList<User>(Arrays.asList(
+    public List<User> mDummyUsers = new ArrayList<User>(Arrays.asList(
             new User(0, "user1", "password1"),
             new User(1, "user2", "password2"),
             new User(2, "user3", "password3"),
