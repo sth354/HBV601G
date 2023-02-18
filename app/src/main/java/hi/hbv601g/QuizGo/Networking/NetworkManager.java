@@ -12,6 +12,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import hi.hbv601g.QuizGo.Entities.Question;
+
 public class NetworkManager {
 
     private static final String BASE_URL = "http://10.0.2.2:8080/";

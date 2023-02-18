@@ -14,14 +14,14 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="192dp"
-        tools:srcCompat="@drawable/logo" />
+        tools:srcCompat="@drawable/logo"/>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="58dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/playButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/loadButton"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="@string/loadGame"
@@ -41,7 +41,7 @@
         app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/loginButton"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="@string/choosePlayers"
@@ -50,7 +50,7 @@
         app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/scoreButton"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="@string/viewScores"

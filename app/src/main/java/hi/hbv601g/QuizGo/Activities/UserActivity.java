@@ -7,7 +7,7 @@ import android.os.Bundle;
 import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.Services.UserService;
-import hi.hbv601g.quizgo.R;
+import hi.hbv601g.QuizGo.R;
 
 public class UserActivity extends AppCompatActivity {
     private UserService mUserService;
