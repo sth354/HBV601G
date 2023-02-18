@@ -58,5 +58,3 @@
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 </LinearLayout>
-
-<Linear
