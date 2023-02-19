@@ -23,9 +23,13 @@ public class UserService extends Service {
             new User(3, "user4", "password4"))
     );
 
+    public List<User> mUsersPlaying;
+
     private ScoreService mScoreService;
 
     public UserService() {
+        mUsersPlaying = new ArrayList<User>(Arrays.asList(
+                new User(0, "user1", "password1")));
     }
 
     @Override
@@ -66,6 +70,7 @@ public class UserService extends Service {
 
         if (doesExist != null) {
             if (doesExist.getPassword().equals(passwordHash(user.getPassword(),"salt"))) {
+                mUsersPlaying.add(doesExist);
                 return doesExist;
             }
         }
@@ -75,6 +80,10 @@ public class UserService extends Service {
     public Score[] getScores(User[] users) {
         //TODO implement
         return null;
+    }
+
+    public List<User> getUsers() {
+        return mUsersPlaying;
     }
 
     private String passwordHash(String passwordToHash,String salt) {

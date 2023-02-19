@@ -39,7 +39,6 @@ public class User {
 
     @NonNull
     public String toString() {
-        //TODO implement
-        return null;
+        return mUsername;
     }
 }

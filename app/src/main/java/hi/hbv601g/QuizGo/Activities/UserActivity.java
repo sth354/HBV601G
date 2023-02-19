@@ -24,6 +24,8 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        mUserService = MenuActivity.getUserService();
+
         mLoginButton = findViewById(R.id.loginButton);
         mLoginButton.setOnClickListener(view -> {
             loginUser();
@@ -35,9 +37,8 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    public User[] registerUser() {
-        //TODO implement
-        return null;
+    public void registerUser() {
+
     }
 
     public void loginUser() {

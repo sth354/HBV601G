@@ -4,6 +4,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import java.util.List;
+
+import hi.hbv601g.QuizGo.Activities.MenuActivity;
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
@@ -21,21 +24,22 @@ public class GameService extends Service {
     private ScoreService mScoreService;
     private SaveStateService mSaveStateService;
     private UserService mUserService;
-    private User[] mUsers;
+    private List<User> mUsers;
     private Score[] mScores;
     private int mDifficulty;
     private int currentPlayer;
 
-    public GameService(User[] users,int difficulty) {
-        mUsers = users;
-        mDifficulty = difficulty;
+    public GameService() {
         currentPlayer = 0;
+        mUserService = MenuActivity.getUserService();
+        mUsers = mUserService.getUsers();
+        System.out.println(mUsers.get(0).toString());
+        setDifficulty(0);
 
-        int n = mUsers.length;
+        int n = mUsers.size();
         mScores = new Score[n];
         for (int i = 0; i < n; i++) {
-            mScores[i].setUser(mUsers[i]);
-            mScores[i].setDifficulty(mDifficulty);
+            mScores[i] = new Score(0,mUsers.get(i),0,0);
         }
     }
 
@@ -43,6 +47,19 @@ public class GameService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public List<User> getUsers() {
+        return mUsers;
+    }
+
+    public Score getScore() {
+        System.out.println(currentPlayer);
+        return mScores[currentPlayer];
+    }
+
+    public User currentPlayer() {
+        return mUsers.get(currentPlayer);
     }
 
     public Question[] getQuestions() {
@@ -55,7 +72,12 @@ public class GameService extends Service {
     }
 
     public void nextPlayer() {
-        currentPlayer++;
+        if (currentPlayer < mUsers.size() - 1) {
+            currentPlayer++;
+        }
+        else {
+            currentPlayer = 0;
+        }
     }
 
     public int correctAnswer() {
@@ -63,5 +85,9 @@ public class GameService extends Service {
         mScores[currentPlayer].setScore(mScores[currentPlayer].getScore()+1);
         nextPlayer();
         return score;
+    }
+
+    public void setDifficulty(int difficulty) {
+        mDifficulty = difficulty;
     }
 }

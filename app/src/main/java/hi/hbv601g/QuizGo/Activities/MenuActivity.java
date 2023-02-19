@@ -8,9 +8,12 @@ import android.widget.Button;
 
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.R;
+import hi.hbv601g.QuizGo.Services.UserService;
 
 public class MenuActivity extends AppCompatActivity {
     private static final String USER_CODE = "hi.hbv601g.QuizGo.Users";
+
+    private static UserService mUserService;
 
     private User[] mUsers;
     private int[] mUserIds;
@@ -23,6 +26,8 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        mUserService = new UserService();
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(view -> {
@@ -37,6 +42,10 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         scoreButton = findViewById(R.id.scoreButton);
+    }
+
+    public static UserService getUserService() {
+        return mUserService;
     }
 
     public void playGame() {
