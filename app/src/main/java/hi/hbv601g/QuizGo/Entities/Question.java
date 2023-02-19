@@ -1,32 +1,65 @@
 package hi.hbv601g.QuizGo.Entities;
 
+import androidx.annotation.NonNull;
+
 public class Question {
-
-    //TODO: Put @SerializedName("")
     private int mId;
-    //TODO: Put @SerializedName("")
-    private int mTextResId;
-    //TODO: Put @SerializedName("")
-    private boolean mAnswerTrue;
+    private int mDifficulty;
+    private String mQuestion;
+    private String mAnswer;
+    private boolean mIsAnswered;
 
-    public Question(int textResId, boolean answerTrue) {
-        mTextResId = textResId;
-        mAnswerTrue = answerTrue;
+    public Question(int id, int difficulty, String question, String answer, boolean isAnswered) {
+        mId = id;
+        mDifficulty = difficulty;
+        mQuestion = question;
+        mAnswer = answer;
+        mIsAnswered = isAnswered;
     }
 
-    public int getTextResId() {
-        return mTextResId;
+    public int getId() {
+        return mId;
     }
 
-    public void setTextResId(int textResId) {
-        mTextResId = textResId;
+    public void setId(int id) {
+        mId = id;
     }
 
-    public boolean isAnswerTrue() {
-        return mAnswerTrue;
+    public int getDifficulty() {
+        return mDifficulty;
     }
 
-    public void setAnswerTrue(boolean answerTrue) {
-        mAnswerTrue = answerTrue;
+    public void setDifficulty(int difficulty) {
+        mDifficulty = difficulty;
+    }
+
+    public String getQuestion() {
+        return mQuestion;
+    }
+
+    public void setQuestion(String question) {
+        mQuestion = question;
+    }
+
+    public String getAnswer() {
+        return mAnswer;
+    }
+
+    public void setAnswer(String answer) {
+        mAnswer = answer;
+    }
+
+    public boolean isAnswered() {
+        return mIsAnswered;
+    }
+
+    public void setAnswered(boolean answered) {
+        mIsAnswered = answered;
+    }
+
+    @NonNull
+    public String toString() {
+        //TODO implement
+        return null;
     }
 }

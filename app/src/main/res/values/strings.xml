@@ -1,21 +1,19 @@
 <resources>
     <string name="app_name">QuizGo</string>
+
+    <string name="playGame">Play Game</string>
+    <string name="loadGame">Load Game</string>
+    <string name="choosePlayers">Choose Players</string>
+    <string name="viewScores">View Scores</string>
+
+    <string name="login">Login</string>
+    <string name="register">Create user</string>
+    <string name="back">Back</string>
+
+    <string name="question">How many are the yule lads?</string>
     <string name="true_button">TRUE</string>
     <string name="false_button">FALSE</string>
-    <string name="next_button">NEXT</string>
-    <string name="cheat_button">CHEAT!</string>
-    <string name="correct_toast">Correct!</string>
-    <string name="incorrect_toast">Incorrect!</string>
-    <string name="judgement_toast">Cheating is wrong.</string>
-    <string name="question_text1">This is the best app ever!1</string>
-    <string name="question_text2">This is the worst app ever!2</string>
-    <string name="question_text3">This is the best app ever!3</string>
-    <string name="question_text4">This is the worst app ever!4</string>
-    <string name="question_text5">This is the best app ever!5</string>
+    <string name="user">User1234</string>
+    <string name="seeAnswer">See Answer</string>
 
-
-    <string name="cheat_confirm_text">Are you sure you want to cheat?</string>
-    <string name="showAnswer_button">SHOW ANSWER</string>
-
-    <string name="mainMenu">Leikur</string>
 </resources>
