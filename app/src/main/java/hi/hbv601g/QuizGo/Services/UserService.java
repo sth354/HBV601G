@@ -21,7 +21,7 @@ import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
     //TODO get database to replace dummy users
-    private final String userFile = "users.txt";
+    private final String userFile = "\\sampledata\\users.txt";
 
     public List<User> mUsersPlaying;
 
@@ -39,9 +39,13 @@ public class UserService extends Service {
 
     public User register(User user) {
         //TODO replace with database call
-        User doesExist = findUser(user);
+        User doesExist = null;//findUser(user);
         if (doesExist != null) return null;
+
         User newUser = new User(user.getUsername(),passwordHash(user.getPassword()));
+        System.out.println(newUser.getPassword());
+
+        //throwing filenotfound for some reason
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(userFile));
             out.write(newUser.getUsername() + " " + newUser.getPassword());
