@@ -28,7 +28,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         mUserService = new UserService();
-        mUsers = mUserService.getUsers();
+        updatePlayers();
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(view -> {
@@ -72,6 +72,10 @@ public class MenuActivity extends AppCompatActivity {
 
     public void viewScores() {
         //TODO implement
+    }
+
+    private void updatePlayers() {
+        mUsers = mUserService.getUsers();
     }
 
     //TODO interface stuff
