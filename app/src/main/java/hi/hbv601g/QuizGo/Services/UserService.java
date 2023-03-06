@@ -21,7 +21,7 @@ import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
     //TODO get database to replace dummy users
-    private final String userFile = "\\sampledata\\users.txt";
+    private final String userFile = "sampledata\\users.txt";
 
     public List<User> mUsersPlaying;
 
