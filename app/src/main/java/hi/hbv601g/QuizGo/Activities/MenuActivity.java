@@ -6,17 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import java.util.List;
+
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.R;
 import hi.hbv601g.QuizGo.Services.UserService;
 
 public class MenuActivity extends AppCompatActivity {
-    private static final String USER_CODE = "hi.hbv601g.QuizGo.Users";
 
     private static UserService mUserService;
 
-    private User[] mUsers;
-    private int[] mUserIds;
+    private List<User> mUsers;
 
     private Button playButton;
     private Button loadButton;
@@ -28,6 +28,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         mUserService = new UserService();
+        updatePlayers();
 
         playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(view -> {
@@ -51,7 +52,6 @@ public class MenuActivity extends AppCompatActivity {
     public void playGame() {
         if (mUsers != null) {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(USER_CODE, mUserIds);
             startActivity(intent);
         }
     }
@@ -62,18 +62,7 @@ public class MenuActivity extends AppCompatActivity {
 
     public void choosePlayers() {
         //temporary
-        mUsers = new User[] {
-                new User(0, "user1", "password1"),
-                new User(1, "user2", "password2"),
-                new User(2, "user3", "password3"),
-                new User(3, "user4", "password4")
-        };
-        mUserIds = new int[mUsers.length];
-        int i = 0;
-        for (User user:mUsers) {
-            mUserIds[i] = user.getId();
-            i++;
-        }
+        mUserService.register(new User("player1","password1"));
 
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
@@ -83,6 +72,10 @@ public class MenuActivity extends AppCompatActivity {
 
     public void viewScores() {
         //TODO implement
+    }
+
+    private void updatePlayers() {
+        mUsers = mUserService.getUsers();
     }
 
     //TODO interface stuff
