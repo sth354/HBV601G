@@ -9,7 +9,7 @@
     <string name="login">Login</string>
     <string name="register">Create user</string>
     <string name="back">Back</string>
-    <string name="email">E-mail</string>
+    <string name="username">Username</string>
     <string name="passw">Password</string>
     <string name="user1">User1</string>
     <string name="user2">User2</string>

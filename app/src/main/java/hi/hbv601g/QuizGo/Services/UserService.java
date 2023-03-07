@@ -22,6 +22,8 @@ import hi.hbv601g.QuizGo.Entities.User;
 public class UserService extends Service {
     //TODO get database to replace dummy users
     private final String userFile = "sampledata\\users.txt";
+    private final int mMinPlayers = 2;
+    private final int mMaxPlayers = 4;
 
     public List<User> mUsersPlaying;
 
@@ -54,7 +56,9 @@ public class UserService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mUsersPlaying.add(newUser);
+        if (!maxPlayers()) {
+            mUsersPlaying.add(newUser);
+        }
         return newUser;
     }
 
@@ -66,12 +70,18 @@ public class UserService extends Service {
     public User login(User user) {
         User foundUser = findUser(user);
         if (foundUser != null) {
-            mUsersPlaying.add(foundUser);
+            if (!maxPlayers()) {
+                mUsersPlaying.add(foundUser);
+            }
         }
         return foundUser;
 
         //TODO replace with database call
 
+    }
+
+    public void logout(int n) {
+        mUsersPlaying.remove(n);
     }
 
     public Score[] getScores(User[] users) {
@@ -81,6 +91,10 @@ public class UserService extends Service {
 
     public List<User> getUsers() {
         return mUsersPlaying;
+    }
+
+    public boolean gameReady() {
+        return mUsersPlaying.size() >= mMinPlayers;
     }
 
     private String passwordHash(String passwordToHash) {
@@ -117,5 +131,9 @@ public class UserService extends Service {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private boolean maxPlayers() {
+        return mUsersPlaying.size() == mMaxPlayers;
     }
 }
