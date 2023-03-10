@@ -1,6 +1,7 @@
 package hi.hbv601g.QuizGo.Services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -13,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,7 +23,7 @@ import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
     //TODO get database to replace dummy users
-    private final String userFile = "sampledata\\users.txt";
+    private final String userFile = "/data/user/0/hi.hbv601g.QuizGo/files/users.txt";
     private final int mMinPlayers = 2;
     private final int mMaxPlayers = 4;
 
@@ -41,16 +43,15 @@ public class UserService extends Service {
 
     public User register(User user) {
         //TODO replace with database call
-        User doesExist = null;//findUser(user);
-        if (doesExist != null) return null;
+        if (usernameTaken(user.getUsername())) {
+            return null;
+        }
 
         User newUser = new User(user.getUsername(),passwordHash(user.getPassword()));
-        System.out.println(newUser.getPassword());
 
-        //throwing filenotfound for some reason
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(userFile));
-            out.write(newUser.getUsername() + " " + newUser.getPassword());
+            BufferedWriter out = new BufferedWriter(new FileWriter(userFile,true));
+            out.write( newUser.getUsername() + " " + newUser.getPassword());
             out.newLine();
             out.close();
         } catch (IOException e) {
@@ -121,7 +122,8 @@ public class UserService extends Service {
             while (scanner.hasNextLine()) {
                 String str = scanner.nextLine();
                 String[] userStr = str.split("\\s+");
-                if (user.getUsername().equals(userStr[1])) {
+                System.out.println(Arrays.toString(userStr));
+                if (user.getUsername().equals(userStr[0]) && user.getPassword().equals(userStr[1])) {
                     return new User(userStr[0],userStr[1]);
                 }
             }
@@ -131,6 +133,26 @@ public class UserService extends Service {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private boolean usernameTaken(String username) {
+        try {
+            Scanner scanner = new Scanner(new File(userFile));
+
+            while (scanner.hasNextLine()) {
+                String str = scanner.nextLine();
+                String[] userStr = str.split("\\s+");
+                System.out.println(Arrays.toString(userStr));
+                if (username.equals(userStr[0])) {
+                    return true;
+                }
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private boolean maxPlayers() {

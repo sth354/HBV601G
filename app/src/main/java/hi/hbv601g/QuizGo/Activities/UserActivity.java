@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Arrays;
 
 import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
@@ -56,12 +59,15 @@ public class UserActivity extends AppCompatActivity {
             User user = mUserService.register(new User(name,pw));
             if (user != null) {
                 displayUser(user);
+                resetInfo();
+            }
+            else {
+                displayToast(R.string.takenToast);
             }
         }
     }
 
     public void loginUser() {
-        logout(2);
         String name = mUsername.getText().toString();
         String pw = mPassword.getText().toString();
 
@@ -69,6 +75,10 @@ public class UserActivity extends AppCompatActivity {
             User user = mUserService.login(new User(name,pw));
             if (user != null) {
                 displayUser(user);
+                resetInfo();
+            }
+            else {
+                displayToast(R.string.loginFailedToast);
             }
         }
     }
@@ -95,6 +105,10 @@ public class UserActivity extends AppCompatActivity {
                 System.out.println("No one is logged in (this should never print)");
         }
         mUser4.setText("");
+    }
+
+    private void displayToast(int toast) {
+        Toast.makeText(UserActivity.this, toast, Toast.LENGTH_SHORT).show();
     }
 
     private void displayUser(User user) {
@@ -131,6 +145,11 @@ public class UserActivity extends AppCompatActivity {
         else {
             return 4;
         }
+    }
+
+    private void resetInfo() {
+        mUsername.setText("");
+        mPassword.setText("");
     }
 
     //TODO interface stuff
