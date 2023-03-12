@@ -1,16 +1,27 @@
 package hi.hbv601g.QuizGo.Entities;
 
+import androidx.annotation.NonNull;
+
 public class Score {
+    private int mId;
     private User mUser;
     private int mDifficulty;
     private int mScore;
 
-    public Score(User user, int difficulty, int score) {
+    public Score(int id, User user, int difficulty, int score) {
+        mId = id;
         mUser = user;
         mDifficulty = difficulty;
         mScore = score;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
     public User getUser() {
         return mUser;
     }
@@ -33,5 +44,10 @@ public class Score {
 
     public void setScore(int score) {
         mScore = score;
+    }
+
+    @NonNull
+    public String toString() {
+        return mScore + "";
     }
 }

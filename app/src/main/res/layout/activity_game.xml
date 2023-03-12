@@ -6,4 +6,86 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="hi.hbv601g.QuizGo.CheatActivity"/>
+    android:background="#FF9A16">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="321dp"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        tools:text="Question"
+        android:textColor="#1824FC"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/trueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/true_button"
+            app:backgroundTint="#FF9A16"
+            />
+
+        <Button
+            android:id="@+id/falseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/false_button"
+            app:backgroundTint="#FF9A16"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:srcCompat="@drawable/hringur" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/seeAnswerButton"
+        android:layout_width="302dp"
+        android:layout_height="48dp"
+        android:text="@string/seeAnswer"
+        app:backgroundTint="#FF9A16" />
+
+    <TextView
+        android:id="@+id/user1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user"
+        android:textColor="#1824FC" />
+
+    <TextView
+        android:id="@+id/user1Score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#1824FC" />
+
+</LinearLayout>

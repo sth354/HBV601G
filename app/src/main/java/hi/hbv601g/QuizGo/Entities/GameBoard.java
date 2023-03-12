@@ -5,15 +5,17 @@ import androidx.annotation.NonNull;
 public class GameBoard {
     private int mGbId;
     private String mGbName;
+    private User[] mUsers;
     private Score[] mScores;
     private int mDifficulty;
     private int mCurrentQuestion;
     private int[] mPlayerLocations;
     private Question[] mQuestions;
 
-    public GameBoard(int gbId, String gbName, Score[] scores, int difficulty, int currentQuestion, int[] playerLocations, Question[] questions) {
+    public GameBoard(int gbId, String gbName, User[] users, Score[] scores, int difficulty, int currentQuestion, int[] playerLocations, Question[] questions) {
         mGbId = gbId;
         mGbName = gbName;
+        mUsers = users;
         mScores = scores;
         mDifficulty = difficulty;
         mCurrentQuestion = currentQuestion;
@@ -35,6 +37,14 @@ public class GameBoard {
 
     public void setGbName(String gbName) {
         mGbName = gbName;
+    }
+
+    public User[] getUsers() {
+        return mUsers;
+    }
+
+    public void setUsers(User[] users) {
+        mUsers = users;
     }
 
     public Score[] getScores() {
