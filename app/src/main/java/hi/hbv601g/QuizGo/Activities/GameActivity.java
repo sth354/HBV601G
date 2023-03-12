@@ -26,7 +26,6 @@ public class GameActivity extends AppCompatActivity {
     private int mCurrentQuestion;
     private User mCurrentUser;
     private int[] mPlayerLocations;
-    private int[] mUserIds;
 
     private TextView mQuestion;
     private TextView mUser1;
@@ -62,12 +61,12 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         questionApi.start();
-
+        try {
+            mGameService.sem.acquire();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
         updateQuestion();
-
-        //sending ids for now
-        Intent intent = getIntent();
-        mUserIds = intent.getIntArrayExtra(USER_CODE);
 
         mSeeAnswer.setOnClickListener(view -> {
             mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
@@ -115,6 +114,7 @@ public class GameActivity extends AppCompatActivity {
             refreshQuestions(); // Generate 10 new questions
             try {
                 mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+                System.out.println(mQuestions[mCurrentQuestion].getQuestion());
             } catch (Exception e) {
                 e.printStackTrace();
             }

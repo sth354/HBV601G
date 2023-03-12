@@ -50,7 +50,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void playGame() {
-        if (mUsers != null) {
+        if (mUserService.gameReady()) {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
         }
