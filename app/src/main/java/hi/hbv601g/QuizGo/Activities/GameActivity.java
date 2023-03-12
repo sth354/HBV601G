@@ -83,6 +83,20 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    //A thread that runs when we need 10 new questions
+    private void refreshQuestions() {
+        Thread questionApi = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mQuestions = mGameService.getQuestions();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        questionApi.start();
+    }
     public void updateUsers() {
         mCurrentUser = mGameService.currentPlayer();
         mUser1.setText(mCurrentUser.toString());
@@ -90,11 +104,22 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void updateQuestion() {
-        try {
-            mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (mCurrentQuestion < 10) {
+            try {
+                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            mCurrentQuestion = 0; // Set index back to 0
+            refreshQuestions(); // Generate 10 new questions
+            try {
+                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         mSeeAnswer.setText(R.string.seeAnswer);
         mCurrentQuestion++;
     }
