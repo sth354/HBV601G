@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,20 @@ public class GameActivity extends AppCompatActivity {
 
         mGameService = new GameService();
         updateUsers();
-        mQuestions = mGameService.getQuestions();
+
+        //NEW THREAD TO MAKE THE API CALL ONLINE AND GENERATE QUESTIONS
+        Thread questionApi = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mQuestions = mGameService.getQuestions();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        questionApi.start();
+
         updateQuestion();
 
         //sending ids for now
@@ -79,6 +94,21 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    //A thread that runs when we need 10 new questions
+    private void refreshQuestions() {
+        Thread questionApi = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mQuestions = mGameService.getQuestions();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        questionApi.start();
+    }
+    
     public void updateUsers() {
         mCurrentUser = mGameService.currentPlayer();
         mUser1.setText(mCurrentUser.toString());
@@ -86,7 +116,22 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void updateQuestion() {
-        mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+        if (mCurrentQuestion < 10) {
+            try {
+                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            mCurrentQuestion = 0; // Set index back to 0
+            refreshQuestions(); // Generate 10 new questions
+            try {
+                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         mSeeAnswer.setText(R.string.seeAnswer);
         mCurrentQuestion++;
     }
