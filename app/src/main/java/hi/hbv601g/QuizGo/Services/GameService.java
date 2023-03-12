@@ -3,7 +3,26 @@ package hi.hbv601g.QuizGo.Services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import hi.hbv601g.QuizGo.Activities.MenuActivity;
@@ -12,15 +31,6 @@ import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class GameService extends Service {
-    //TODO get API to replace dummy questions
-    private Question[] mQuestions = new Question[] {
-            new Question(0, 0,"Question0","Answer0",false),
-            new Question(1, 0,"Question2","Answer1",false),
-            new Question(2, 0,"Question3","Answer2",false),
-            new Question(3, 0,"Question4","Answer3",false)
-    };
-
-
     private ScoreService mScoreService;
     private SaveStateService mSaveStateService;
     private UserService mUserService;
@@ -58,14 +68,35 @@ public class GameService extends Service {
         return mScores[currentPlayer];
     }
 
+
+    public Question[] getQuestions() throws IOException {
+        // Make the API call and retrieve the JSON data
+        String apiUrl = "https://the-trivia-api.com/api/questions?limit=10";
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
+        JsonElement jsonElement = JsonParser.parseReader(new InputStreamReader((InputStream) connection.getContent()));
+
+        // Use GSON to parse the JSON data and loop through the questions
+        Question[] mQuestions = new Question[10];
+        JsonArray questionsArray = jsonElement.getAsJsonArray();
+        for (int i = 0; i < 10; i++) {
+            JsonObject questionObject = questionsArray.get(i).getAsJsonObject();
+            String question = questionObject.get("question").getAsString();
+            String answer = questionObject.get("correctAnswer").getAsString();
+            Question mTempQuestion = new Question(i,0,question,answer,false);
+            mQuestions[i] = mTempQuestion;
+        }
+        return mQuestions;
+    }
+
     public User currentPlayer() {
         return mUsers.get(currentPlayer);
     }
 
-    public Question[] getQuestions() {
-        //TODO implement (gets 10 questions at a time, doesnt get same questions)
-        return mQuestions;
-    }
+
+    //TODO get API to replace dummy questions
 
     public void saveGame() {
         //TODO implement
