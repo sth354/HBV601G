@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Entities.User;
+import hi.hbv601g.QuizGo.Fragments.GameFragment;
 import hi.hbv601g.QuizGo.Services.GameService;
 import hi.hbv601g.QuizGo.R;
 
@@ -36,6 +38,14 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragmentContainerView, GameFragment.class, null)
+                    .commit();
+        }
+
         setContentView(R.layout.activity_game);
 
         mQuestion = findViewById(R.id.question);
@@ -68,6 +78,7 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+
     public void updateUsers() {
         mCurrentUser = mGameService.currentPlayer();
         mUser1.setText(mCurrentUser.toString());
@@ -91,6 +102,7 @@ public class GameActivity extends AppCompatActivity {
     public void play() {
         //TODO implement
     }
+
 
     //TODO interface stuff
 }
