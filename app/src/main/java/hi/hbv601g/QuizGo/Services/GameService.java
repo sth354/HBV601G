@@ -46,7 +46,6 @@ public class GameService extends Service {
         currentPlayer = 0;
         mUserService = MenuActivity.getUserService();
         mUsers = mUserService.getUsers();
-        System.out.println(mUsers.get(0).toString());
         setDifficulty(0);
 
         int n = mUsers.size();
