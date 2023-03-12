@@ -15,15 +15,16 @@
     <string name="user2">User2</string>
     <string name="user3">User3</string>
     <string name="user4">User4</string>
+
     <string name="takenToast">Username taken</string>
     <string name="loginFailedToast">Incorrect username or password</string>
-
-
 
     <string name="question">How many are the yule lads?</string>
     <string name="true_button">TRUE</string>
     <string name="false_button">FALSE</string>
     <string name="user">User1234</string>
     <string name="seeAnswer">See Answer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

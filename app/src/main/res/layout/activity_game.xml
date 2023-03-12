@@ -6,17 +6,12 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#FF9A16"
-    tools:context="hi.hbv601g.QuizGo.Activities.GameActivity">
+    android:background="#FF9A16">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="143dp"
         app:srcCompat="@drawable/logo" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="21dp" />
 
     <TextView
         android:id="@+id/question"
@@ -62,20 +57,23 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="40dp" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:srcCompat="@drawable/hringur" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/seeAnswerButton"
         android:layout_width="302dp"
-        android:layout_height="252dp"
+        android:layout_height="48dp"
         android:text="@string/seeAnswer"
-        app:backgroundTint="#FF9A16"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="37dp" />
+        app:backgroundTint="#FF9A16" />
 
     <TextView
         android:id="@+id/user1"
