@@ -62,8 +62,6 @@ public class MenuActivity extends AppCompatActivity {
 
     public void choosePlayers() {
         //temporary
-        mUserService.register(new User("player1","password1"));
-
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
 
