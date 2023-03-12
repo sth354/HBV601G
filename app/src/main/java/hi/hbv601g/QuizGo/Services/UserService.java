@@ -123,7 +123,7 @@ public class UserService extends Service {
                 String str = scanner.nextLine();
                 String[] userStr = str.split("\\s+");
                 System.out.println(Arrays.toString(userStr));
-                if (user.getUsername().equals(userStr[0]) && user.getPassword().equals(userStr[1])) {
+                if (user.getUsername().equals(userStr[0]) && passwordHash(user.getPassword()).equals(userStr[1])) {
                     return new User(userStr[0],userStr[1]);
                 }
             }

@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import hi.hbv601g.QuizGo.Activities.MenuActivity;
 import hi.hbv601g.QuizGo.Entities.Question;
@@ -31,6 +32,8 @@ import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class GameService extends Service {
+    public Semaphore sem;
+
     private ScoreService mScoreService;
     private SaveStateService mSaveStateService;
     private UserService mUserService;
@@ -43,7 +46,6 @@ public class GameService extends Service {
         currentPlayer = 0;
         mUserService = MenuActivity.getUserService();
         mUsers = mUserService.getUsers();
-        System.out.println(mUsers.get(0).toString());
         setDifficulty(0);
 
         int n = mUsers.size();
@@ -51,6 +53,8 @@ public class GameService extends Service {
         for (int i = 0; i < n; i++) {
             mScores[i] = new Score(0,mUsers.get(i),0,0);
         }
+
+        sem = new Semaphore(0);
     }
 
     @Override
@@ -88,6 +92,7 @@ public class GameService extends Service {
             Question mTempQuestion = new Question(i,0,question,answer,false);
             mQuestions[i] = mTempQuestion;
         }
+        sem.release();
         return mQuestions;
     }
 
