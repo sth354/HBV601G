@@ -30,11 +30,10 @@ public class GameFragment extends Fragment {
         Context mcontext = getActivity();
 
         // Replace your previous Canvas implementation with the custom MyCanvas class
-        MyCanvas canvas = new MyCanvas(mcontext);
 
         // You can remove this line because the background color will be replaced by the background image
         // canvas.setBackgroundColor(Color.RED);
 
-        return canvas;
+        return new MyCanvas(mcontext);
     }
 }
