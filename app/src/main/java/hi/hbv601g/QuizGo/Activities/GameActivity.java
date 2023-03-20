@@ -43,7 +43,7 @@ public class GameActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainerView, GameFragment.class, null)
+                    .add(R.id.fragment_container, GameFragment.class, null)
                     .commit();
         }
 
