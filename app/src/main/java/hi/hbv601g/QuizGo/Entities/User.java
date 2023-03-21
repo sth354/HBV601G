@@ -1,6 +1,7 @@
 package hi.hbv601g.QuizGo.Entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class User {
     //private int mId;
@@ -35,6 +36,13 @@ public class User {
 
     public void setPassword(String password) {
         mPassword = password;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        User user = (User) obj;
+        assert user != null;
+        return user.getUsername().equals(this.getUsername()) && user.getPassword().equals(this.getPassword());
     }
 
     @NonNull
