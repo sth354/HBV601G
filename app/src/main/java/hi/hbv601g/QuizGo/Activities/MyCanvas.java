@@ -32,7 +32,7 @@ public class MyCanvas extends View {
 
     private void init(@Nullable AttributeSet set) {
         // Load the background image from resources
-        backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hringur);
+        backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hring);
     }
 
     @Override
