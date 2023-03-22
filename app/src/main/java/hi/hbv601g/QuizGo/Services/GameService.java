@@ -69,9 +69,17 @@ public class GameService extends Service {
 
     public Score getScore() {
         System.out.println(currentPlayer);
-        return mScores[currentPlayer];
+        if (currentPlayer != 0) {
+            return mScores[currentPlayer-1];
+        }
+        else {
+            return mScores[currentPlayer];
+        }
     }
 
+    public int currentPlayer() {
+        return currentPlayer;
+    }
 
     public Question[] getQuestions() throws IOException {
         // Make the API call and retrieve the JSON data
@@ -96,10 +104,6 @@ public class GameService extends Service {
         return mQuestions;
     }
 
-    public User currentPlayer() {
-        return mUsers.get(currentPlayer);
-    }
-
 
     //TODO get API to replace dummy questions
 
@@ -119,6 +123,12 @@ public class GameService extends Service {
     public int correctAnswer() {
         int score = mScores[currentPlayer].getScore()+1;
         mScores[currentPlayer].setScore(mScores[currentPlayer].getScore()+1);
+        nextPlayer();
+        return score;
+    }
+
+    public int currentScore() {
+        int score = mScores[currentPlayer].getScore();
         nextPlayer();
         return score;
     }
