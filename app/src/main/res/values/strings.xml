@@ -18,6 +18,7 @@
 
     <string name="takenToast">Username taken</string>
     <string name="loginFailedToast">Incorrect username or password</string>
+    <string name="alreadyLoggedInToast">Already logged in</string>
 
     <string name="question">How many are the yule lads?</string>
     <string name="true_button">TRUE</string>

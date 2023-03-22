@@ -19,6 +19,11 @@ public class UserActivity extends AppCompatActivity {
     private UserService mUserService;
     private Button mLoginButton;
     private Button mRegisterButton;
+
+    //TODO delete this
+    private Button mTestButton;
+
+
     private EditText mUsername;
     private EditText mPassword;
     private TextView mUser1;
@@ -41,6 +46,19 @@ public class UserActivity extends AppCompatActivity {
         mRegisterButton = findViewById(R.id.registerButton);
         mRegisterButton.setOnClickListener(view -> {
             registerUser();
+        });
+
+        //TODO delete this
+        mTestButton = findViewById(R.id.testButton);
+        mTestButton.setOnClickListener(view -> {
+            mUsername.setText("Play1");
+            mPassword.setText("password");
+            registerUser();
+            loginUser();
+            mUsername.setText("Play2");
+            mPassword.setText("password");
+            registerUser();
+            loginUser();
         });
 
         mUsername = findViewById(R.id.username);
@@ -73,12 +91,15 @@ public class UserActivity extends AppCompatActivity {
 
         if (!name.equals("") && !pw.equals("")) {
             User user = mUserService.login(new User(name,pw));
-            if (user != null) {
-                displayUser(user);
-                resetInfo();
+            if (user == null) {
+                displayToast(R.string.loginFailedToast);
+            }
+            else if (user.getUsername().equals("")) {
+                displayToast(R.string.alreadyLoggedInToast);
             }
             else {
-                displayToast(R.string.loginFailedToast);
+                displayUser(user);
+                resetInfo();
             }
         }
     }
@@ -129,7 +150,6 @@ public class UserActivity extends AppCompatActivity {
                 System.out.println("Max players reached");
                 break;
         }
-
     }
 
     private int currentUser() {
@@ -151,6 +171,5 @@ public class UserActivity extends AppCompatActivity {
         mUsername.setText("");
         mPassword.setText("");
     }
-
     //TODO interface stuff
 }
