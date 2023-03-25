@@ -28,8 +28,23 @@ public class MyCanvas extends View {
     }
 
     private void createCircles() {
-        addCircle(320, 100, 25);
-        addCircle(520, 100, 25);
+        addCircle(350, 150, 25);
+        addCircle(450, 150, 25);
+        addCircle(260, 185, 25);
+        addCircle(540, 185, 25);
+        addCircle(185, 260, 25);
+        addCircle(150, 350, 25);
+        addCircle(150, 450, 25);
+        addCircle(185, 540, 25);
+
+        addCircle(650, 450, 25);
+        addCircle(605, 540, 25);
+        addCircle(605, 260, 25);
+        addCircle(650, 350, 25);
+        addCircle(260, 605, 25);
+        addCircle(540, 605, 25);
+        addCircle(350, 650, 25);
+        addCircle(450, 650, 25);
     }
 
     public MyCanvas(Context context) {
