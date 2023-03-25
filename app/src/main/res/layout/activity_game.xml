@@ -59,9 +59,9 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
+        android:name="hi.hbv601g.QuizGo.Fragments.GameFragment"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:name="hi.hbv601g.QuizGo.Fragments.GameFragment"
         tools:context=".GameActivity"
         tools:layout="@layout/fragment_game" />
 

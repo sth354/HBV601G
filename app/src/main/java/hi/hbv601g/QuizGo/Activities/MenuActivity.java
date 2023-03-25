@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -49,10 +50,14 @@ public class MenuActivity extends AppCompatActivity {
         return mUserService;
     }
 
+
     public void playGame() {
         if (mUserService.gameReady()) {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
+        }
+        else {
+            displayToast(R.string.minPlayersToast);
         }
     }
 
@@ -74,6 +79,10 @@ public class MenuActivity extends AppCompatActivity {
 
     private void updatePlayers() {
         mUsers = mUserService.getUsers();
+    }
+
+    private void displayToast(int toast) {
+        Toast.makeText(MenuActivity.this, toast, Toast.LENGTH_SHORT).show();
     }
 
     //TODO interface stuff
