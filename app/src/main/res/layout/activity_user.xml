@@ -56,6 +56,16 @@
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="testing"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="110dp" />

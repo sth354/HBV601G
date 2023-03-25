@@ -124,10 +124,15 @@ public class UserService extends Service {
                 String[] userStr = str.split("\\s+");
                 System.out.println(Arrays.toString(userStr));
                 if (user.getUsername().equals(userStr[0]) && passwordHash(user.getPassword()).equals(userStr[1])) {
+                    for (User playing: mUsersPlaying) {
+                         if (playing.getUsername().equals(user.getUsername())) {
+                             System.out.println("already logged in");
+                             return new User("","");
+                         }
+                    }
                     return new User(userStr[0],userStr[1]);
                 }
             }
-
             scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -142,7 +147,6 @@ public class UserService extends Service {
             while (scanner.hasNextLine()) {
                 String str = scanner.nextLine();
                 String[] userStr = str.split("\\s+");
-                System.out.println(Arrays.toString(userStr));
                 if (username.equals(userStr[0])) {
                     return true;
                 }
