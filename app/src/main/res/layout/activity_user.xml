@@ -10,6 +10,32 @@
     android:orientation="vertical"
     tools:context="hi.hbv601g.QuizGo.Activities.UserActivity">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="166dp" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="254dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="@string/passw"
+        android:inputType="textPassword"
+        android:textAlignment="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="46dp" />
+
     <Button
         android:id="@+id/loginButton"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -29,5 +55,62 @@
         android:textColor="#1824FC"
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
+
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="testing"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="110dp" />
+
+    <LinearLayout
+        android:layout_width="340dp"
+        android:layout_height="75dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/user1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="User1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/user2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="User2"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/user3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="User3"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/user4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="User4"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

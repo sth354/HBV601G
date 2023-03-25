@@ -4,15 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.fonts.Font;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Entities.User;
+import hi.hbv601g.QuizGo.Fragments.GameFragment;
 import hi.hbv601g.QuizGo.Services.GameService;
 import hi.hbv601g.QuizGo.R;
 
@@ -22,13 +28,18 @@ public class GameActivity extends AppCompatActivity {
     private GameService mGameService;
     private Question[] mQuestions;
     private int mCurrentQuestion;
-    private User mCurrentUser;
+
     private int[] mPlayerLocations;
-    private int[] mUserIds;
 
     private TextView mQuestion;
     private TextView mUser1;
+    private TextView mUser2;
+    private TextView mUser3;
+    private TextView mUser4;
     private TextView mUser1Score;
+    private TextView mUser2Score;
+    private TextView mUser3Score;
+    private TextView mUser4Score;
     private Button mTrue;
     private Button mFalse;
     private Button mSeeAnswer;
@@ -36,46 +47,159 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_container, GameFragment.class, null)
+                    .commit();
+        }
+
         setContentView(R.layout.activity_game);
 
         mQuestion = findViewById(R.id.question);
         mTrue = findViewById(R.id.trueButton);
         mFalse = findViewById(R.id.falseButton);
         mSeeAnswer = findViewById(R.id.seeAnswerButton);
+
         mUser1 = findViewById(R.id.user1);
+        mUser2 = findViewById(R.id.user2);
+        mUser3 = findViewById(R.id.user3);
+        mUser4 = findViewById(R.id.user4);
         mUser1Score = findViewById(R.id.user1Score);
+        mUser2Score = findViewById(R.id.user2Score);
+        mUser3Score = findViewById(R.id.user3Score);
+        mUser4Score = findViewById(R.id.user4Score);
 
         mGameService = new GameService();
-        updateUsers();
-        mQuestions = mGameService.getQuestions();
-        updateQuestion();
+        updateUsers(-1);
 
-        //sending ids for now
-        Intent intent = getIntent();
-        mUserIds = intent.getIntArrayExtra(USER_CODE);
+        //NEW THREAD TO MAKE THE API CALL ONLINE AND GENERATE QUESTIONS
+        Thread questionApi = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mQuestions = mGameService.getQuestions();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        questionApi.start();
+        try {
+            mGameService.sem.acquire();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+        updateQuestion();
 
         mSeeAnswer.setOnClickListener(view -> {
             mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
         });
         mTrue.setOnClickListener(view -> {
-            mGameService.correctAnswer();
             updateQuestion();
-            updateUsers();
+            updateUsers(mGameService.correctAnswer());
         });
         mFalse.setOnClickListener(view -> {
             updateQuestion();
-            updateUsers();
+            updateUsers(mGameService.currentScore());
         });
     }
 
-    public void updateUsers() {
-        mCurrentUser = mGameService.currentPlayer();
-        mUser1.setText(mCurrentUser.toString());
-        mUser1Score.setText(mGameService.getScore().toString());
+
+    //A thread that runs when we need 10 new questions
+    private void refreshQuestions() {
+        Thread questionApi = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mQuestions = mGameService.getQuestions();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        questionApi.start();
+    }
+    
+    public void updateUsers(int i) {
+        List<User> players = mGameService.getUsers();
+        if (i == -1) {
+            mUser1.setText(players.get(0).toString());
+            mUser1Score.setText("0");
+            mUser2.setText(players.get(1).toString());
+            mUser2Score.setText("0");
+            if (players.size() > 2) {
+                mUser3.setText(players.get(2).toString());
+                mUser3Score.setText("0");
+            }
+            if (players.size() > 3) {
+                mUser4.setText(players.get(3).toString());
+                mUser4Score.setText("0");
+            }
+            mUser1.setTypeface(null, Typeface.BOLD);
+        }
+        else {
+            int currentPlayer = mGameService.currentPlayer();
+            int lastPlayer = players.size()-1;
+            switch (currentPlayer) {
+               case 0:
+                   switch (lastPlayer) {
+                       case 1:
+                           mUser2Score.setText(Integer.toString(i));
+                           mUser2.setTypeface(null, Typeface.NORMAL);
+                           break;
+                       case 2:
+                           mUser3Score.setText(Integer.toString(i));
+                           mUser3.setTypeface(null, Typeface.NORMAL);
+                           break;
+                       case 3:
+                           mUser4Score.setText(Integer.toString(i));
+                           mUser4.setTypeface(null, Typeface.NORMAL);
+                           break;
+                       default:
+                           System.out.println("errrorrrrr");
+                  }
+                  mUser1.setTypeface(null, Typeface.BOLD);
+                  break;
+               case 1:
+                   mUser1Score.setText(Integer.toString(i));
+                   mUser1.setTypeface(null, Typeface.NORMAL);
+                   mUser2.setTypeface(null, Typeface.BOLD);
+                   break;
+               case 2:
+                   mUser2Score.setText(Integer.toString(i));
+                   mUser2.setTypeface(null, Typeface.NORMAL);
+                   mUser3.setTypeface(null, Typeface.BOLD);
+                   break;
+               case 3:
+                   mUser3Score.setText(Integer.toString(i));
+                   mUser3.setTypeface(null, Typeface.NORMAL);
+                   mUser4.setTypeface(null, Typeface.BOLD);
+                   break;
+               default:
+                   System.out.println("errrorrrrr");
+            }
+        }
     }
 
     public void updateQuestion() {
-        mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+        if (mCurrentQuestion < 10) {
+            try {
+                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            mCurrentQuestion = 0; // Set index back to 0
+            refreshQuestions(); // Generate 10 new questions
+            try {
+                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
+                System.out.println(mQuestions[mCurrentQuestion].getQuestion());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         mSeeAnswer.setText(R.string.seeAnswer);
         mCurrentQuestion++;
     }
@@ -91,6 +215,7 @@ public class GameActivity extends AppCompatActivity {
     public void play() {
         //TODO implement
     }
+
 
     //TODO interface stuff
 }
