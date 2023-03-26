@@ -28,23 +28,23 @@ public class MyCanvas extends View {
     }
 
     private void createCircles() {
-        addCircle(350, 150, 25);
-        addCircle(450, 150, 25);
-        addCircle(260, 185, 25);
-        addCircle(540, 185, 25);
-        addCircle(185, 260, 25);
-        addCircle(150, 350, 25);
-        addCircle(150, 450, 25);
-        addCircle(185, 540, 25);
+        addCircle(450, 150, 25); // Numer 1
+        addCircle(540, 185, 25); // Numer 2
+        addCircle(605, 260, 25); // Numer 3
+        addCircle(650, 350, 25); // Numer 4
+        addCircle(650, 450, 25); // Numer 5
+        addCircle(605, 540, 25); // Numer 6
+        addCircle(540, 605, 25); // Numer 7
+        addCircle(450, 650, 25); // Numer 8
 
-        addCircle(650, 450, 25);
-        addCircle(605, 540, 25);
-        addCircle(605, 260, 25);
-        addCircle(650, 350, 25);
-        addCircle(260, 605, 25);
-        addCircle(540, 605, 25);
-        addCircle(350, 650, 25);
-        addCircle(450, 650, 25);
+        addCircle(350, 650, 25); // Numer 9
+        addCircle(260, 605, 25); // Numer 10
+        addCircle(185, 540, 25); // Numer 11
+        addCircle(150, 450, 25); // Numer 12
+        addCircle(150, 350, 25); // Numer 13
+        addCircle(185, 260, 25); // Numer 14
+        addCircle(260, 185, 25); // Numer 15
+        addCircle(350, 150, 25); // Numer 16
     }
 
     public MyCanvas(Context context) {
@@ -99,11 +99,6 @@ public class MyCanvas extends View {
         // Draw the background image on the canvas
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         // Draw circles
-        float centerX = getWidth() / 2f;
-        float centerY = getHeight() / 2f;
-        float radius = 30; // You can change this value to adjust the size of the circle
-        canvas.drawCircle(centerX, centerY, radius, paint);
-        canvas.drawCircle(centerX, centerY, radius, paint);
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
