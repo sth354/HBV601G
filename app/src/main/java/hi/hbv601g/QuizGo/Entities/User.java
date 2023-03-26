@@ -8,10 +8,13 @@ public class User {
     private String mUsername;
     private String mPassword;
 
+    private int mScore;
+
     public User(String username, String password) {
         //mId = id;
         mUsername = username;
         mPassword = password;
+        mScore = 0;
     }
 
     //public int getId() {
@@ -36,6 +39,14 @@ public class User {
 
     public void setPassword(String password) {
         mPassword = password;
+    }
+
+    public int getScore() {
+        return mScore;
+    }
+
+    public void setScore(int n) {
+        mScore = n;
     }
 
     @Override

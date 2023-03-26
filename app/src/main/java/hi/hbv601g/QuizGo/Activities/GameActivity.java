@@ -33,6 +33,8 @@ public class GameActivity extends AppCompatActivity {
 
     private int[] mPlayerLocations;
 
+    private GameFragment mGameFragment;
+
     private TextView mQuestion;
     private TextView mUser1;
     private TextView mUser2;
@@ -50,10 +52,12 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mGameFragment = new GameFragment();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, GameFragment.class, null)
+                    .add(R.id.fragment_container, mGameFragment.getClass(), null)
                     .commit();
         }
 
@@ -99,11 +103,13 @@ public class GameActivity extends AppCompatActivity {
         mTrue.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
+            updatePlayerLocations();
         });
         mFalse.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.currentScore());
         });
+        updatePlayerLocations();
     }
 
     //A thread that runs when we need 10 new questions
@@ -201,6 +207,12 @@ public class GameActivity extends AppCompatActivity {
         }
         mSeeAnswer.setText(R.string.seeAnswer);
         mCurrentQuestion++;
+    }
+
+    public void updatePlayerLocations() {
+        for (User player: mGameService.getUsers()) {
+            mGameFragment.setPlayer(player.getScore());
+        }
     }
 
     @Override

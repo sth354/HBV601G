@@ -15,25 +15,26 @@ import hi.hbv601g.QuizGo.R;
 
 public class GameFragment extends Fragment {
 
+    private static MyCanvas mCanvas;
+
     public GameFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCanvas = new MyCanvas(getActivity());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Context mcontext = getActivity();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return mCanvas;
+    }
 
-        // Replace your previous Canvas implementation with the custom MyCanvas class
-
-        // You can remove this line because the background color will be replaced by the background image
-        // canvas.setBackgroundColor(Color.RED);
-
-        return new MyCanvas(mcontext);
+    public void setPlayer(int n) {
+        if (n != 0) {
+            mCanvas.removeCircle(n-1);
+        }
+        mCanvas.addCircle(n);
     }
 }

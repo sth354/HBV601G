@@ -18,54 +18,46 @@ import hi.hbv601g.QuizGo.R;
 
 public class MyCanvas extends View {
 
+    private final float[][] mCircleCoordinates = new float[][] {
+            {450, 150}, // Numer 0
+            {540, 185}, // Numer 1
+            {605, 260}, // Numer 2
+            {650, 350}, // Numer 3
+            {650, 450}, // Numer 4
+            {605, 540}, // Numer 5
+            {540, 605}, // Numer 6
+            {450, 650}, // Numer 7
+            {350, 650}, // Numer 8
+            {260, 605}, // Numer 9
+            {185, 540}, // Numer 10
+            {150, 450}, // Numer 11
+            {150, 350}, // Numer 12
+            {185, 260}, // Numer 13
+            {260, 185}, // Numer 14
+            {350, 150}  // Numer 15
+    };
+
+    private final float mRadius = 25;
+
     private List<Circle> circles = new ArrayList<>();
     private Bitmap backgroundBitmap;
 
     private Paint paint;
 
-    private void addCircle(float x, float y, float radius) {
-        circles.add(new Circle(x, y, radius));
+    public void addCircle(int n) {
+        float x = mCircleCoordinates[n][0];
+        float y = mCircleCoordinates[n][1];
+        circles.add(new Circle(x,y,mRadius));
     }
 
-    private void createCircles() {
-        addCircle(450, 150, 25); // Numer 1
-        addCircle(540, 185, 25); // Numer 2
-        addCircle(605, 260, 25); // Numer 3
-        addCircle(650, 350, 25); // Numer 4
-        addCircle(650, 450, 25); // Numer 5
-        addCircle(605, 540, 25); // Numer 6
-        addCircle(540, 605, 25); // Numer 7
-        addCircle(450, 650, 25); // Numer 8
-
-        addCircle(350, 650, 25); // Numer 9
-        addCircle(260, 605, 25); // Numer 10
-        addCircle(185, 540, 25); // Numer 11
-        addCircle(150, 450, 25); // Numer 12
-        addCircle(150, 350, 25); // Numer 13
-        addCircle(185, 260, 25); // Numer 14
-        addCircle(260, 185, 25); // Numer 15
-        addCircle(350, 150, 25); // Numer 16
+    public void removeCircle(int n) {
+        circles.remove(n);
     }
 
     public MyCanvas(Context context) {
         super(context);
         init(null);
         initializePaint();
-        createCircles();
-    }
-
-    public MyCanvas(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs);
-        initializePaint();
-        createCircles();
-    }
-
-    public MyCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(attrs);
-        initializePaint();
-        createCircles();
     }
 
     private void initializePaint() {

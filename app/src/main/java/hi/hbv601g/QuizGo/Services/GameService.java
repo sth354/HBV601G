@@ -122,7 +122,8 @@ public class GameService extends Service {
 
     public int correctAnswer() {
         int score = mScores[currentPlayer].getScore()+1;
-        mScores[currentPlayer].setScore(mScores[currentPlayer].getScore()+1);
+        mScores[currentPlayer].setScore(score);
+        mUsers.get(currentPlayer).setScore(score);
         nextPlayer();
         return score;
     }
