@@ -39,25 +39,28 @@ public class MyCanvas extends View {
 
     private final float mRadius = 25;
 
-    private List<Circle> circles = new ArrayList<>();
+    private static Circle[] circles = new Circle[16];
     private Bitmap backgroundBitmap;
 
     private Paint paint;
 
-    public void addCircle(int n) {
-        float x = mCircleCoordinates[n][0];
-        float y = mCircleCoordinates[n][1];
-        circles.add(new Circle(x,y,mRadius));
+    public void addCircle(Paint color, int location) {
+        float x = mCircleCoordinates[location][0];
+        float y = mCircleCoordinates[location][1];
+        circles[location] = new Circle(x,y,mRadius,color);
     }
 
-    public void removeCircle(int n) {
-        circles.remove(n);
+    public void removeCircle(Paint color, int location) {
+        if (circles[location].color.equals(color)) {
+            circles[location] = null;
+        }
     }
 
     public MyCanvas(Context context) {
         super(context);
         init(null);
         initializePaint();
+
     }
 
     private void initializePaint() {
@@ -77,10 +80,13 @@ public class MyCanvas extends View {
         float y;
         float radius;
 
-        public Circle(float x, float y, float radius) {
+        Paint color;
+
+        public Circle(float x, float y, float radius, Paint color) {
             this.x = x;
             this.y = y;
             this.radius = radius;
+            this.color = color;
         }
     }
 
@@ -90,14 +96,11 @@ public class MyCanvas extends View {
 
         // Draw the background image on the canvas
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
-        // Draw circles
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.BLUE);
 
         for (Circle circle : circles) {
-            canvas.drawCircle(circle.x, circle.y, circle.radius, paint);
+            if (circle != null) {
+                canvas.drawCircle(circle.x, circle.y, circle.radius, circle.color);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
 import android.os.Bundle;
@@ -109,7 +110,7 @@ public class GameActivity extends AppCompatActivity {
             updateQuestion();
             updateUsers(mGameService.currentScore());
         });
-        updatePlayerLocations();
+        initLocations();
     }
 
     //A thread that runs when we need 10 new questions
@@ -209,9 +210,22 @@ public class GameActivity extends AppCompatActivity {
         mCurrentQuestion++;
     }
 
+    public void initLocations() {
+        Paint color = new Paint();
+        color.setStyle(Paint.Style.FILL);
+        color.setColor(Color.BLUE);
+        mGameFragment.setPlayer(color,0, mGameService.getUsers().size());
+    }
+
     public void updatePlayerLocations() {
-        for (User player: mGameService.getUsers()) {
-            mGameFragment.setPlayer(player.getScore());
+
+
+
+
+        int max = mGameService.getUsers().size();
+        for (int i = 0; i < max; i++) {
+            System.out.println(mGameService.getUsers().get(i).getScore());
+            //mGameFragment.setPlayer(i,mGameService.getUsers().get(i).getScore(),max);
         }
     }
 

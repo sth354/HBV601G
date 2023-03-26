@@ -2,6 +2,7 @@ package hi.hbv601g.QuizGo.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -31,10 +32,11 @@ public class GameFragment extends Fragment {
         return mCanvas;
     }
 
-    public void setPlayer(int n) {
-        if (n != 0) {
-            mCanvas.removeCircle(n-1);
+    public void setPlayer(Paint color, int location, int max) {
+        if (location != 0) {
+            mCanvas.removeCircle(color, location-1);
         }
-        mCanvas.addCircle(n);
+        mCanvas.addCircle(color, location);
+        mCanvas.invalidate();
     }
 }
