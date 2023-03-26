@@ -58,6 +58,7 @@ public class UserService extends Service {
             e.printStackTrace();
         }
         if (!maxPlayers()) {
+            System.out.println("meow");
             mUsersPlaying.add(newUser);
         }
         return newUser;
@@ -70,7 +71,7 @@ public class UserService extends Service {
      */
     public User login(User user) {
         User foundUser = findUser(user);
-        if (foundUser != null) {
+        if (foundUser != null && !foundUser.getUsername().equals("")) {
             if (!maxPlayers()) {
                 mUsersPlaying.add(foundUser);
             }
@@ -116,6 +117,7 @@ public class UserService extends Service {
     }
 
     private User findUser(User user) {
+        System.out.println(mUsersPlaying.size());
         try {
             Scanner scanner = new Scanner(new File(userFile));
 

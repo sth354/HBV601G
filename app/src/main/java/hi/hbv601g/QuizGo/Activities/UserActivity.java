@@ -67,6 +67,8 @@ public class UserActivity extends AppCompatActivity {
         mUser2 = findViewById(R.id.user2);
         mUser3 = findViewById(R.id.user3);
         mUser4 = findViewById(R.id.user4);
+
+        updateView();
     }
 
     public void registerUser() {
@@ -170,6 +172,12 @@ public class UserActivity extends AppCompatActivity {
     private void resetInfo() {
         mUsername.setText("");
         mPassword.setText("");
+    }
+
+    public void updateView() {
+        for (User user: mUserService.getUsers()) {
+            displayUser(user);
+        }
     }
     //TODO interface stuff
 }

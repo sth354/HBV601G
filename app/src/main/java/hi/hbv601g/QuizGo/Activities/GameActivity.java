@@ -1,8 +1,10 @@
 package hi.hbv601g.QuizGo.Activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -75,14 +77,11 @@ public class GameActivity extends AppCompatActivity {
         updateUsers(-1);
 
         //NEW THREAD TO MAKE THE API CALL ONLINE AND GENERATE QUESTIONS
-        Thread questionApi = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mQuestions = mGameService.getQuestions();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Thread questionApi = new Thread(() -> {
+            try {
+                mQuestions = mGameService.getQuestions();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         questionApi.start();
@@ -93,6 +92,7 @@ public class GameActivity extends AppCompatActivity {
         }
         updateQuestion();
 
+        //listeners
         mSeeAnswer.setOnClickListener(view -> {
             mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
         });
@@ -105,7 +105,6 @@ public class GameActivity extends AppCompatActivity {
             updateUsers(mGameService.currentScore());
         });
     }
-
 
     //A thread that runs when we need 10 new questions
     private void refreshQuestions() {
@@ -202,6 +201,17 @@ public class GameActivity extends AppCompatActivity {
         }
         mSeeAnswer.setText(R.string.seeAnswer);
         mCurrentQuestion++;
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to go back to the menu? (data will be lost)")
+                .setPositiveButton("Yes", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
     }
 
     public void saveGame() {
