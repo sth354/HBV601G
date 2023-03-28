@@ -7,65 +7,83 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.CollapsibleActionView;
 import android.view.View;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import hi.hbv601g.QuizGo.R;
 
 public class MyCanvas extends View {
 
-    private List<Circle> circles = new ArrayList<>();
+    public Semaphore sem;
+
+    private final float[][] mCircleCoordinates = new float[][] {
+            {450, 150}, // Numer 0
+            {540, 185}, // Numer 1
+            {605, 260}, // Numer 2
+            {650, 350}, // Numer 3
+            {650, 450}, // Numer 4
+            {605, 540}, // Numer 5
+            {540, 605}, // Numer 6
+            {450, 650}, // Numer 7
+            {350, 650}, // Numer 8
+            {260, 605}, // Numer 9
+            {185, 540}, // Numer 10
+            {150, 450}, // Numer 11
+            {150, 350}, // Numer 12
+            {185, 260}, // Numer 13
+            {260, 185}, // Numer 14
+            {350, 150}  // Numer 15
+    };
+
+    private final float mRadius = 25;
+
+    private static Circle[] circles = new Circle[16];
     private Bitmap backgroundBitmap;
 
     private Paint paint;
 
-    private void addCircle(float x, float y, float radius) {
-        circles.add(new Circle(x, y, radius));
+    public void addCircle(Paint color, int location) {
+        float x = mCircleCoordinates[location][0];
+        float y = mCircleCoordinates[location][1];
+        circles[location] = new Circle(x,y,mRadius,color);
     }
 
-    private void createCircles() {
-        addCircle(450, 150, 25); // Numer 1
-        addCircle(540, 185, 25); // Numer 2
-        addCircle(605, 260, 25); // Numer 3
-        addCircle(650, 350, 25); // Numer 4
-        addCircle(650, 450, 25); // Numer 5
-        addCircle(605, 540, 25); // Numer 6
-        addCircle(540, 605, 25); // Numer 7
-        addCircle(450, 650, 25); // Numer 8
-
-        addCircle(350, 650, 25); // Numer 9
-        addCircle(260, 605, 25); // Numer 10
-        addCircle(185, 540, 25); // Numer 11
-        addCircle(150, 450, 25); // Numer 12
-        addCircle(150, 350, 25); // Numer 13
-        addCircle(185, 260, 25); // Numer 14
-        addCircle(260, 185, 25); // Numer 15
-        addCircle(350, 150, 25); // Numer 16
+    public void removePrevCircles(Paint color,int location) {
+        if (location == 0) {
+            sem.release();
+            return;
+        }
+        reverseCircles();
+        for (int i = 0; i < circles.length; i++) {
+            if (circles[i] != null) {
+                if (circles[i].color.equals(color)) {
+                    System.out.println(i);
+                    circles[i] = null;
+                }
+            }
+        }
+        reverseCircles();
+        sem.release();
+        System.out.println("sem released");
     }
 
     public MyCanvas(Context context) {
         super(context);
         init(null);
         initializePaint();
-        createCircles();
+        sem = new Semaphore(0);
     }
 
-    public MyCanvas(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs);
-        initializePaint();
-        createCircles();
-    }
-
-    public MyCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(attrs);
-        initializePaint();
-        createCircles();
+    private void reverseCircles() {
+        Collections.reverse(Arrays.asList(circles));
     }
 
     private void initializePaint() {
@@ -85,10 +103,13 @@ public class MyCanvas extends View {
         float y;
         float radius;
 
-        public Circle(float x, float y, float radius) {
+        Paint color;
+
+        public Circle(float x, float y, float radius, Paint color) {
             this.x = x;
             this.y = y;
             this.radius = radius;
+            this.color = color;
         }
     }
 
@@ -98,14 +119,11 @@ public class MyCanvas extends View {
 
         // Draw the background image on the canvas
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
-        // Draw circles
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.BLUE);
 
         for (Circle circle : circles) {
-            canvas.drawCircle(circle.x, circle.y, circle.radius, paint);
+            if (circle != null) {
+                canvas.drawCircle(circle.x, circle.y, circle.radius, circle.color);
+            }
         }
     }
 }

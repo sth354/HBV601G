@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ public class GameActivity extends AppCompatActivity {
 
     private int[] mPlayerLocations;
 
+    private GameFragment mGameFragment;
+
     private TextView mQuestion;
     private TextView mUser1;
     private TextView mUser2;
@@ -50,10 +53,12 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mGameFragment = new GameFragment();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, GameFragment.class, null)
+                    .add(R.id.fragment_container, mGameFragment.getClass(), null)
                     .commit();
         }
 
@@ -99,11 +104,23 @@ public class GameActivity extends AppCompatActivity {
         mTrue.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
+            win();
+            prevLocations();
+            playingLocation();
         });
         mFalse.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.currentScore());
         });
+        initColors();
+        playingLocation();
+    }
+
+    public void win() {
+        User user = mGameService.getUsers().get(mGameService.currentPlayer());
+        if (user.getScore() == 14) {
+            winDialog(user.getUsername());
+        }
     }
 
     //A thread that runs when we need 10 new questions
@@ -203,6 +220,31 @@ public class GameActivity extends AppCompatActivity {
         mCurrentQuestion++;
     }
 
+    public void initColors() {
+        int max = mGameService.getUsers().size();
+        List<User> players = mGameService.getUsers();
+        for (int i = 0; i < max; i++) {
+            players.get(i).setColor(mGameService.getPlayerColor(i));
+        }
+    }
+
+    public void playingLocation() {
+        int currentPlayer = mGameService.currentPlayer();
+        User player = mGameService.getUsers().get(currentPlayer);
+        mGameFragment.setPlayer(player.getColor(),player.getScore());
+    }
+
+    public void prevLocations() {
+        int currentPlayer = mGameService.currentPlayer();
+        int max = mGameService.getUsers().size();
+        for (int i = 0; i < max; i++) {
+            if (i != currentPlayer) {
+                User player = mGameService.getUsers().get(i);
+                mGameFragment.setPlayer(player.getColor(),player.getScore());
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -211,6 +253,15 @@ public class GameActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to go back to the menu? (data will be lost)")
                 .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
+                .show();
+    }
+
+    public void winDialog(String name) {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.btn_star_big_on)
+                .setTitle("Winner!")
+                .setMessage("Congratulations " + name + "!" + " You won!")
+                .setPositiveButton("Exit", (dialog, which) -> finish())
                 .show();
     }
 
