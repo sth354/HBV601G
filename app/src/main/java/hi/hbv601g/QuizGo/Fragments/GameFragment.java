@@ -33,8 +33,11 @@ public class GameFragment extends Fragment {
     }
 
     public void setPlayer(Paint color, int location) {
-        if (location != 0) {
-            mCanvas.removePrevCircles(color);
+        mCanvas.removePrevCircles(color,location);
+        try {
+            mCanvas.sem.acquire();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
         mCanvas.addCircle(color, location);
         mCanvas.invalidate();

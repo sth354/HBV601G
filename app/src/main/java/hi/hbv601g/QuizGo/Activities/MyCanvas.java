@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import hi.hbv601g.QuizGo.R;
 
 public class MyCanvas extends View {
 
-    //TODO add semaphore!!!
+    public Semaphore sem;
 
     private final float[][] mCircleCoordinates = new float[][] {
             {450, 150}, // Numer 0
@@ -55,29 +56,30 @@ public class MyCanvas extends View {
         circles[location] = new Circle(x,y,mRadius,color);
     }
 
-    public void removePrevCircles(Paint color) {
-        Circle found = null;
+    public void removePrevCircles(Paint color,int location) {
+        if (location == 0) {
+            sem.release();
+            return;
+        }
         reverseCircles();
-        for (Circle circle: circles) {
-            if (circle != null) {
-                if (circle.color.equals(color)) {
-                    if (found != null) {
-                        found = null;
-                    }
-                    else {
-                        found = circle;
-                    }
+        for (int i = 0; i < circles.length; i++) {
+            if (circles[i] != null) {
+                if (circles[i].color.equals(color)) {
+                    System.out.println(i);
+                    circles[i] = null;
                 }
             }
         }
         reverseCircles();
+        sem.release();
+        System.out.println("sem released");
     }
 
     public MyCanvas(Context context) {
         super(context);
         init(null);
         initializePaint();
-
+        sem = new Semaphore(0);
     }
 
     private void reverseCircles() {

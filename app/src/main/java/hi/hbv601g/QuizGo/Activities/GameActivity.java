@@ -104,6 +104,7 @@ public class GameActivity extends AppCompatActivity {
         mTrue.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
+            win();
             prevLocations();
             playingLocation();
         });
@@ -113,6 +114,13 @@ public class GameActivity extends AppCompatActivity {
         });
         initColors();
         playingLocation();
+    }
+
+    public void win() {
+        User user = mGameService.getUsers().get(mGameService.currentPlayer());
+        if (user.getScore() == 14) {
+            winDialog(user.getUsername());
+        }
     }
 
     //A thread that runs when we need 10 new questions
@@ -245,6 +253,15 @@ public class GameActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to go back to the menu? (data will be lost)")
                 .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
+                .show();
+    }
+
+    public void winDialog(String name) {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.btn_star_big_on)
+                .setTitle("Winner!")
+                .setMessage("Congratulations " + name + "!" + " You won!")
+                .setPositiveButton("Exit", (dialog, which) -> finish())
                 .show();
     }
 
