@@ -104,13 +104,15 @@ public class GameActivity extends AppCompatActivity {
         mTrue.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
-            updatePlayerLocations();
+            prevLocations();
+            playingLocation();
         });
         mFalse.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.currentScore());
         });
-        initLocations();
+        initColors();
+        playingLocation();
     }
 
     //A thread that runs when we need 10 new questions
@@ -210,22 +212,28 @@ public class GameActivity extends AppCompatActivity {
         mCurrentQuestion++;
     }
 
-    public void initLocations() {
-        Paint color = new Paint();
-        color.setStyle(Paint.Style.FILL);
-        color.setColor(Color.BLUE);
-        mGameFragment.setPlayer(color,0, mGameService.getUsers().size());
+    public void initColors() {
+        int max = mGameService.getUsers().size();
+        List<User> players = mGameService.getUsers();
+        for (int i = 0; i < max; i++) {
+            players.get(i).setColor(mGameService.getPlayerColor(i));
+        }
     }
 
-    public void updatePlayerLocations() {
+    public void playingLocation() {
+        int currentPlayer = mGameService.currentPlayer();
+        User player = mGameService.getUsers().get(currentPlayer);
+        mGameFragment.setPlayer(player.getColor(),player.getScore());
+    }
 
-
-
-
+    public void prevLocations() {
+        int currentPlayer = mGameService.currentPlayer();
         int max = mGameService.getUsers().size();
         for (int i = 0; i < max; i++) {
-            System.out.println(mGameService.getUsers().get(i).getScore());
-            //mGameFragment.setPlayer(i,mGameService.getUsers().get(i).getScore(),max);
+            if (i != currentPlayer) {
+                User player = mGameService.getUsers().get(i);
+                mGameFragment.setPlayer(player.getColor(),player.getScore());
+            }
         }
     }
 

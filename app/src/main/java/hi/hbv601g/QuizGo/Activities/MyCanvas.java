@@ -7,16 +7,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.CollapsibleActionView;
 import android.view.View;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import hi.hbv601g.QuizGo.R;
 
 public class MyCanvas extends View {
+
+    //TODO add semaphore!!!
 
     private final float[][] mCircleCoordinates = new float[][] {
             {450, 150}, // Numer 0
@@ -50,10 +55,22 @@ public class MyCanvas extends View {
         circles[location] = new Circle(x,y,mRadius,color);
     }
 
-    public void removeCircle(Paint color, int location) {
-        if (circles[location].color.equals(color)) {
-            circles[location] = null;
+    public void removePrevCircles(Paint color) {
+        Circle found = null;
+        reverseCircles();
+        for (Circle circle: circles) {
+            if (circle != null) {
+                if (circle.color.equals(color)) {
+                    if (found != null) {
+                        found = null;
+                    }
+                    else {
+                        found = circle;
+                    }
+                }
+            }
         }
+        reverseCircles();
     }
 
     public MyCanvas(Context context) {
@@ -61,6 +78,10 @@ public class MyCanvas extends View {
         init(null);
         initializePaint();
 
+    }
+
+    private void reverseCircles() {
+        Collections.reverse(Arrays.asList(circles));
     }
 
     private void initializePaint() {

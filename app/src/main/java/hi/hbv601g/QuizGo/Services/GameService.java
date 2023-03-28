@@ -2,6 +2,8 @@ package hi.hbv601g.QuizGo.Services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -136,5 +138,25 @@ public class GameService extends Service {
 
     public void setDifficulty(int difficulty) {
         mDifficulty = difficulty;
+    }
+
+    public Paint getPlayerColor(int currentPlayer) {
+        Paint color = new Paint();
+        color.setStyle(Paint.Style.FILL);
+        switch (currentPlayer) {
+            case 0:
+                color.setColor(Color.BLUE);
+                break;
+            case 1:
+                color.setColor(Color.RED);
+                break;
+            case 2:
+                color.setColor(Color.GREEN);
+                break;
+            case 3:
+                color.setColor(Color.YELLOW);
+                break;
+        }
+        return color;
     }
 }
