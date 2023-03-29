@@ -102,9 +102,10 @@ public class GameActivity extends AppCompatActivity {
             mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
         });
         mTrue.setOnClickListener(view -> {
+            win();
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
-            win();
+            resetBoard();
             prevLocations();
             playingLocation();
         });
@@ -113,6 +114,7 @@ public class GameActivity extends AppCompatActivity {
             updateUsers(mGameService.currentScore());
         });
         initColors();
+        prevLocations();
         playingLocation();
     }
 
@@ -228,10 +230,15 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    public void resetBoard() {
+        mGameFragment.resetBoard();
+    }
+
     public void playingLocation() {
         int currentPlayer = mGameService.currentPlayer();
         User player = mGameService.getUsers().get(currentPlayer);
-        mGameFragment.setPlayer(player.getColor(),player.getScore());
+        System.out.println(player.getColor());
+        mGameFragment.setPlayer(player.getColor(), player.getScore());
     }
 
     public void prevLocations() {
@@ -240,7 +247,7 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < max; i++) {
             if (i != currentPlayer) {
                 User player = mGameService.getUsers().get(i);
-                mGameFragment.setPlayer(player.getColor(),player.getScore());
+                mGameFragment.setPlayer(player.getColor(), player.getScore());
             }
         }
     }

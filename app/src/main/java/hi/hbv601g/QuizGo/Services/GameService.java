@@ -106,9 +106,6 @@ public class GameService extends Service {
         return mQuestions;
     }
 
-
-    //TODO get API to replace dummy questions
-
     public void saveGame() {
         //TODO implement
     }
