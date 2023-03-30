@@ -33,13 +33,17 @@ public class GameFragment extends Fragment {
     }
 
     public void setPlayer(Paint color, int location) {
-        mCanvas.removePrevCircles(color,location);
-        try {
-            mCanvas.sem.acquire();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+        //mCanvas.removePrevCircles(color, location);
+        //try {
+       //     mCanvas.sem.acquire();
+       // } catch (InterruptedException ie) {
+       //     ie.printStackTrace();
+       // }
         mCanvas.addCircle(color, location);
         mCanvas.invalidate();
+    }
+
+    public void resetBoard() {
+        mCanvas.clear();
     }
 }

@@ -21,9 +21,6 @@ import java.util.concurrent.Semaphore;
 import hi.hbv601g.QuizGo.R;
 
 public class MyCanvas extends View {
-
-    public Semaphore sem;
-
     private final float[][] mCircleCoordinates = new float[][] {
             {450, 150}, // Numer 0
             {540, 185}, // Numer 1
@@ -44,53 +41,23 @@ public class MyCanvas extends View {
     };
 
     private final float mRadius = 25;
-
-    private static Circle[] circles = new Circle[16];
+    private static Circle[] circles;
     private Bitmap backgroundBitmap;
-
-    private Paint paint;
 
     public void addCircle(Paint color, int location) {
         float x = mCircleCoordinates[location][0];
         float y = mCircleCoordinates[location][1];
-        circles[location] = new Circle(x,y,mRadius,color);
+        circles[location] = new Circle(x, y, mRadius, color);
     }
 
-    public void removePrevCircles(Paint color,int location) {
-        if (location == 0) {
-            sem.release();
-            return;
-        }
-        reverseCircles();
-        for (int i = 0; i < circles.length; i++) {
-            if (circles[i] != null) {
-                if (circles[i].color.equals(color)) {
-                    System.out.println(i);
-                    circles[i] = null;
-                }
-            }
-        }
-        reverseCircles();
-        sem.release();
-        System.out.println("sem released");
+    public void clear() {
+        circles = new Circle[16];
     }
 
     public MyCanvas(Context context) {
         super(context);
         init(null);
-        initializePaint();
-        sem = new Semaphore(0);
-    }
-
-    private void reverseCircles() {
-        Collections.reverse(Arrays.asList(circles));
-    }
-
-    private void initializePaint() {
-        paint = new Paint();
-        paint.setColor(Color.parseColor("#FFC0CB")); //Pink color
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
+        clear();
     }
 
     private void init(@Nullable AttributeSet set) {
@@ -102,7 +69,6 @@ public class MyCanvas extends View {
         float x;
         float y;
         float radius;
-
         Paint color;
 
         public Circle(float x, float y, float radius, Paint color) {
