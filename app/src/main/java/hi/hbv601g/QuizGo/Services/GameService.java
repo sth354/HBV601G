@@ -84,6 +84,7 @@ public class GameService extends Service {
     }
 
     public Question[] getQuestions() throws IOException {
+
         // Make the API call and retrieve the JSON data
         String apiUrl = "https://the-trivia-api.com/api/questions?limit=10";
         URL url = new URL(apiUrl);

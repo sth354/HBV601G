@@ -1,7 +1,5 @@
 package hi.hbv601g.QuizGo.Fragments;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 
@@ -11,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hi.hbv601g.QuizGo.Activities.MyCanvas;
-import hi.hbv601g.QuizGo.R;
+import hi.hbv601g.QuizGo.Activities.GameBoard;
 
 public class GameFragment extends Fragment {
 
-    private static MyCanvas mCanvas;
+    private static GameBoard mGameBoard;
 
     public GameFragment() {
     }
@@ -24,26 +21,21 @@ public class GameFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCanvas = new MyCanvas(getActivity());
+        mGameBoard = new GameBoard(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return mCanvas;
+        return mGameBoard;
     }
 
     public void setPlayer(Paint color, int location) {
-        //mCanvas.removePrevCircles(color, location);
-        //try {
-       //     mCanvas.sem.acquire();
-       // } catch (InterruptedException ie) {
-       //     ie.printStackTrace();
-       // }
-        mCanvas.addCircle(color, location);
-        mCanvas.invalidate();
+        System.out.println(location);
+        mGameBoard.addCircle(color, location);
+        mGameBoard.invalidate();
     }
 
     public void resetBoard() {
-        mCanvas.clear();
+        mGameBoard.clear();
     }
 }

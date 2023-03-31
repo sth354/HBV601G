@@ -34,6 +34,14 @@ public class GameActivity extends AppCompatActivity {
 
     private int[] mPlayerLocations;
 
+    private final Thread mQuestionApi = new Thread(() -> {
+        try {
+            mQuestions = mGameService.getQuestions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    });
+
     private GameFragment mGameFragment;
 
     private TextView mQuestion;
@@ -54,6 +62,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mGameFragment = new GameFragment();
+        mGameService = new GameService();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -78,23 +87,10 @@ public class GameActivity extends AppCompatActivity {
         mUser3Score = findViewById(R.id.user3Score);
         mUser4Score = findViewById(R.id.user4Score);
 
-        mGameService = new GameService();
         updateUsers(-1);
 
-        //NEW THREAD TO MAKE THE API CALL ONLINE AND GENERATE QUESTIONS
-        Thread questionApi = new Thread(() -> {
-            try {
-                mQuestions = mGameService.getQuestions();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        questionApi.start();
-        try {
-            mGameService.sem.acquire();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+        mCurrentQuestion = 10;
+        mQuestions = new Question[10];
         updateQuestion();
 
         //listeners
@@ -114,7 +110,6 @@ public class GameActivity extends AppCompatActivity {
             updateUsers(mGameService.currentScore());
         });
         initColors();
-        prevLocations();
         playingLocation();
     }
 
@@ -127,17 +122,12 @@ public class GameActivity extends AppCompatActivity {
 
     //A thread that runs when we need 10 new questions
     private void refreshQuestions() {
-        Thread questionApi = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mQuestions = mGameService.getQuestions();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        questionApi.start();
+        mQuestionApi.start();
+        try {
+            mGameService.sem.acquire();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
     }
     
     public void updateUsers(int i) {
@@ -237,7 +227,6 @@ public class GameActivity extends AppCompatActivity {
     public void playingLocation() {
         int currentPlayer = mGameService.currentPlayer();
         User player = mGameService.getUsers().get(currentPlayer);
-        System.out.println(player.getColor());
         mGameFragment.setPlayer(player.getColor(), player.getScore());
     }
 

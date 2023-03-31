@@ -1,26 +1,15 @@
 package hi.hbv601g.QuizGo.Activities;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
-import android.view.CollapsibleActionView;
 import android.view.View;
-import android.graphics.Color;
 import android.graphics.Paint;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import hi.hbv601g.QuizGo.R;
 
-public class MyCanvas extends View {
+public class GameBoard extends View {
     private final float[][] mCircleCoordinates = new float[][] {
             {450, 150}, // Numer 0
             {540, 185}, // Numer 1
@@ -54,15 +43,10 @@ public class MyCanvas extends View {
         circles = new Circle[16];
     }
 
-    public MyCanvas(Context context) {
+    public GameBoard(Context context) {
         super(context);
-        init(null);
-        clear();
-    }
-
-    private void init(@Nullable AttributeSet set) {
-        // Load the background image from resources
         backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hrings);
+        clear();
     }
 
     public class Circle {
