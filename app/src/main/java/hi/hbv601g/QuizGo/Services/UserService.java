@@ -4,12 +4,40 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +59,7 @@ public class UserService extends Service {
 
     private ScoreService mScoreService;
 
-    public UserService() {
+    public UserService() throws MalformedURLException {
         mUsersPlaying = new ArrayList<>();
     }
 
@@ -41,13 +69,45 @@ public class UserService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public User register(User user) {
+    private URL url;
+    private HttpURLConnection con;
+    private String jsonInputString;
+    public User register(User user) throws IOException {
         //TODO replace with database call
         if (usernameTaken(user.getUsername())) {
             return null;
         }
-
         User newUser = new User(user.getUsername(),passwordHash(user.getPassword()));
+
+        // try: create new user in the cloud using JSON POST request
+        try {
+            url = new URL ("https://quizgo-api-server.onrender.com/users");
+            con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+            jsonInputString = "{\"username\": \"" +
+                                user.getUsername() +
+                                "\", \"password\": \""
+                                + user.getPassword()
+                                + "\"}";
+
+            OutputStream os = con.getOutputStream();
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+            os.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(userFile,true));
