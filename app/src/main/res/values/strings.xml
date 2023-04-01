@@ -1,32 +1,31 @@
 <resources>
-    <string name="app_name">QuizGo</string>
+    <string name="app_name" translatable="false">QuizGo</string>
 
-    <string name="playGame">Play Game</string>
-    <string name="loadGame">Load Game</string>
-    <string name="choosePlayers">Choose Players</string>
-    <string name="viewScores">View Scores</string>
+    <!-- Menu strings -->
+    <string name="playGame" translatable="false">Play Game</string>
+    <string name="loadGame" translatable="false">Load Game</string>
+    <string name="choosePlayers" translatable="false">Choose Players</string>
+    <string name="viewScores" translatable="false">View Scores</string>
 
-    <string name="login">Login</string>
-    <string name="register">Create user</string>
-    <string name="back">Back</string>
-    <string name="username">Username</string>
-    <string name="passw">Password</string>
-    <string name="user1">User1</string>
-    <string name="user2">User2</string>
-    <string name="user3">User3</string>
-    <string name="user4">User4</string>
+    <!-- Choose players strings -->
+    <string name="login" translatable="false">Login</string>
+    <string name="register" translatable="false">Create user</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="user1" translatable="false">User1</string>
+    <string name="user2" translatable="false">User2</string>
+    <string name="user3" translatable="false">User3</string>
+    <string name="user4" translatable="false">User4</string>
 
-    <string name="takenToast">Username taken</string>
-    <string name="loginFailedToast">Incorrect username or password</string>
-    <string name="alreadyLoggedInToast">Already logged in</string>
-    <string name="minPlayersToast">At least 2 players needed to play</string>
+    <!-- Game strings -->
+    <string name="right_button" translatable="false">RIGHT</string>
+    <string name="wrong_button" translatable="false">WRONG</string>
+    <string name="seeAnswer_button" translatable="false">See Answer</string>
 
-    <string name="question">How many are the yule lads?</string>
-    <string name="true_button">TRUE</string>
-    <string name="false_button">FALSE</string>
-    <string name="user">User1234</string>
-    <string name="seeAnswer">See Answer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Toast strings -->
+    <string name="takenToast" translatable="false">Username taken</string>
+    <string name="loginFailedToast" translatable="false">Incorrect username or password</string>
+    <string name="alreadyLoggedInToast" translatable="false">Already logged in</string>
+    <string name="minPlayersToast" translatable="false">At least 2 players needed to play</string>
 
 </resources>
