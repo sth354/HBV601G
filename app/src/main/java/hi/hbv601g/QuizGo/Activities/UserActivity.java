@@ -3,11 +3,13 @@ package hi.hbv601g.QuizGo.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import hi.hbv601g.QuizGo.Entities.Score;
@@ -45,7 +47,11 @@ public class UserActivity extends AppCompatActivity {
 
         mRegisterButton = findViewById(R.id.registerButton);
         mRegisterButton.setOnClickListener(view -> {
-            registerUser();
+            try {
+                registerUser();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         //TODO delete this
@@ -53,11 +59,19 @@ public class UserActivity extends AppCompatActivity {
         mTestButton.setOnClickListener(view -> {
             mUsername.setText("Play1");
             mPassword.setText("password");
-            registerUser();
+            try {
+                registerUser();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             loginUser();
             mUsername.setText("Play2");
             mPassword.setText("password");
-            registerUser();
+            try {
+                registerUser();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             loginUser();
         });
 
@@ -71,19 +85,29 @@ public class UserActivity extends AppCompatActivity {
         updateView();
     }
 
-    public void registerUser() {
+    public void registerUser() throws IOException {
         String name = mUsername.getText().toString();
         String pw = mPassword.getText().toString();
-
         if (!name.equals("") && !pw.equals("")) {
-            User user = mUserService.register(new User(name,pw));
-            if (user != null) {
-                displayUser(user);
-                resetInfo();
-            }
-            else {
-                displayToast(R.string.takenToast);
-            }
+            // New thread to make Api POST call
+            Thread userApi = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        User user = mUserService.register(new User(name,pw));
+                        if (user != null) {
+                            displayUser(user);
+                            resetInfo();
+                        }
+                        else {
+                            displayToast(R.string.takenToast);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            userApi.start();
         }
     }
 

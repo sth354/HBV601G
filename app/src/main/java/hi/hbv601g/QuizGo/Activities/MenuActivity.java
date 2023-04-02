@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import hi.hbv601g.QuizGo.Entities.User;
@@ -28,7 +29,11 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        mUserService = new UserService();
+        try {
+            mUserService = new UserService();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         updatePlayers();
 
         playButton = findViewById(R.id.playButton);
