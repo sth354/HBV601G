@@ -118,7 +118,6 @@ public class UserService extends Service {
             e.printStackTrace();
         }
         if (!maxPlayers()) {
-            System.out.println("meow");
             mUsersPlaying.add(newUser);
         }
         return newUser;
@@ -184,7 +183,6 @@ public class UserService extends Service {
             while (scanner.hasNextLine()) {
                 String str = scanner.nextLine();
                 String[] userStr = str.split("\\s+");
-                System.out.println(Arrays.toString(userStr));
                 if (user.getUsername().equals(userStr[0]) && passwordHash(user.getPassword()).equals(userStr[1])) {
                     for (User playing: mUsersPlaying) {
                          if (playing.getUsername().equals(user.getUsername())) {

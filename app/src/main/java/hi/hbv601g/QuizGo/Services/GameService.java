@@ -40,7 +40,6 @@ public class GameService extends Service {
     private SaveStateService mSaveStateService;
     private UserService mUserService;
     private List<User> mUsers;
-    private Score[] mScores;
     private int mDifficulty;
     private int currentPlayer;
 
@@ -49,12 +48,6 @@ public class GameService extends Service {
         mUserService = MenuActivity.getUserService();
         mUsers = mUserService.getUsers();
         setDifficulty(0);
-
-        int n = mUsers.size();
-        mScores = new Score[n];
-        for (int i = 0; i < n; i++) {
-            mScores[i] = new Score(0,mUsers.get(i),0,0);
-        }
 
         sem = new Semaphore(0);
     }
@@ -67,16 +60,6 @@ public class GameService extends Service {
 
     public List<User> getUsers() {
         return mUsers;
-    }
-
-    public Score getScore() {
-        System.out.println(currentPlayer);
-        if (currentPlayer != 0) {
-            return mScores[currentPlayer-1];
-        }
-        else {
-            return mScores[currentPlayer];
-        }
     }
 
     public int currentPlayer() {
@@ -110,6 +93,13 @@ public class GameService extends Service {
         //TODO implement
     }
 
+    public void exit() {
+        currentPlayer = 0;
+        for (User player: mUsers) {
+            player.setScore(0);
+        }
+    }
+
     public void nextPlayer() {
         if (currentPlayer < mUsers.size() - 1) {
             currentPlayer++;
@@ -120,21 +110,27 @@ public class GameService extends Service {
     }
 
     public int correctAnswer() {
-        int score = mScores[currentPlayer].getScore()+1;
-        mScores[currentPlayer].setScore(score);
+        int score = mUsers.get(currentPlayer).getScore()+1;
         mUsers.get(currentPlayer).setScore(score);
         nextPlayer();
         return score;
     }
 
     public int currentScore() {
-        int score = mScores[currentPlayer].getScore();
+        int score = mUsers.get(currentPlayer).getScore();
         nextPlayer();
         return score;
     }
 
     public void setDifficulty(int difficulty) {
         mDifficulty = difficulty;
+    }
+
+    public void initColors() {
+        int max = mUsers.size();
+        for (int i = 0; i < max; i++) {
+            mUsers.get(i).setColor(getPlayerColor(i));
+        }
     }
 
     public Paint getPlayerColor(int currentPlayer) {

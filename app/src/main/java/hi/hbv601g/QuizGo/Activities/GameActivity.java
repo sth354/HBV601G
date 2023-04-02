@@ -26,17 +26,28 @@ import hi.hbv601g.QuizGo.Services.GameService;
 import hi.hbv601g.QuizGo.R;
 
 public class GameActivity extends AppCompatActivity {
-    private static final String USER_CODE = "hi.hbv601g.QuizGo.Users";
 
+    //variables
     private GameService mGameService;
     private Question[] mQuestions;
     private int mCurrentQuestion;
 
-    private int[] mPlayerLocations;
+    private static final String DEFAULT_SCORE = "0";
 
+    private final Thread mQuestionApi = new Thread(() -> {
+        try {
+            mQuestions = mGameService.getQuestions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    });
+
+    //layout objects
     private GameFragment mGameFragment;
-
     private TextView mQuestion;
+    private Button mRight;
+    private Button mWrong;
+    private Button mSeeAnswer;
     private TextView mUser1;
     private TextView mUser2;
     private TextView mUser3;
@@ -45,15 +56,13 @@ public class GameActivity extends AppCompatActivity {
     private TextView mUser2Score;
     private TextView mUser3Score;
     private TextView mUser4Score;
-    private Button mTrue;
-    private Button mFalse;
-    private Button mSeeAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mGameFragment = new GameFragment();
+        mGameService = new GameService();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -64,11 +73,11 @@ public class GameActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_game);
 
+        //initializing view objects
         mQuestion = findViewById(R.id.question);
-        mTrue = findViewById(R.id.trueButton);
-        mFalse = findViewById(R.id.falseButton);
+        mRight = findViewById(R.id.rightButton);
+        mWrong = findViewById(R.id.wrongButton);
         mSeeAnswer = findViewById(R.id.seeAnswerButton);
-
         mUser1 = findViewById(R.id.user1);
         mUser2 = findViewById(R.id.user2);
         mUser3 = findViewById(R.id.user3);
@@ -78,170 +87,72 @@ public class GameActivity extends AppCompatActivity {
         mUser3Score = findViewById(R.id.user3Score);
         mUser4Score = findViewById(R.id.user4Score);
 
-        mGameService = new GameService();
-        updateUsers(-1);
-
-        //NEW THREAD TO MAKE THE API CALL ONLINE AND GENERATE QUESTIONS
-        Thread questionApi = new Thread(() -> {
-            try {
-                mQuestions = mGameService.getQuestions();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        questionApi.start();
-        try {
-            mGameService.sem.acquire();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
-        updateQuestion();
-
         //listeners
         mSeeAnswer.setOnClickListener(view -> {
             mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
         });
-        mTrue.setOnClickListener(view -> {
+        mRight.setOnClickListener(view -> {
             win();
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
-            resetBoard();
+            mGameFragment.resetBoard();
             prevLocations();
             playingLocation();
         });
-        mFalse.setOnClickListener(view -> {
+        mWrong.setOnClickListener(view -> {
             updateQuestion();
             updateUsers(mGameService.currentScore());
         });
-        initColors();
-        prevLocations();
+
+        //initialize users
+        updateUsers(-1);
+
+        //initialize gameboard
+        mGameService.initColors();
         playingLocation();
+
+        //initialize questions
+        mCurrentQuestion = 10;
+        mQuestions = new Question[mCurrentQuestion];
+        updateQuestion();
     }
 
-    public void win() {
-        User user = mGameService.getUsers().get(mGameService.currentPlayer());
-        if (user.getScore() == 14) {
-            winDialog(user.getUsername());
-        }
+    //interface methods/handlers:
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to go back to the menu? (data will be lost)")
+                .setPositiveButton("Yes", (dialog, which) -> exit())
+                .setNegativeButton("No", null)
+                .show();
     }
 
-    //A thread that runs when we need 10 new questions
-    private void refreshQuestions() {
-        Thread questionApi = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mQuestions = mGameService.getQuestions();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        questionApi.start();
-    }
-    
-    public void updateUsers(int i) {
-        List<User> players = mGameService.getUsers();
-        if (i == -1) {
-            mUser1.setText(players.get(0).toString());
-            mUser1Score.setText("0");
-            mUser2.setText(players.get(1).toString());
-            mUser2Score.setText("0");
-            if (players.size() > 2) {
-                mUser3.setText(players.get(2).toString());
-                mUser3Score.setText("0");
-            }
-            if (players.size() > 3) {
-                mUser4.setText(players.get(3).toString());
-                mUser4Score.setText("0");
-            }
-            mUser1.setTypeface(null, Typeface.BOLD);
-        }
-        else {
-            int currentPlayer = mGameService.currentPlayer();
-            int lastPlayer = players.size()-1;
-            switch (currentPlayer) {
-               case 0:
-                   switch (lastPlayer) {
-                       case 1:
-                           mUser2Score.setText(Integer.toString(i));
-                           mUser2.setTypeface(null, Typeface.NORMAL);
-                           break;
-                       case 2:
-                           mUser3Score.setText(Integer.toString(i));
-                           mUser3.setTypeface(null, Typeface.NORMAL);
-                           break;
-                       case 3:
-                           mUser4Score.setText(Integer.toString(i));
-                           mUser4.setTypeface(null, Typeface.NORMAL);
-                           break;
-                       default:
-                           System.out.println("errrorrrrr");
-                  }
-                  mUser1.setTypeface(null, Typeface.BOLD);
-                  break;
-               case 1:
-                   mUser1Score.setText(Integer.toString(i));
-                   mUser1.setTypeface(null, Typeface.NORMAL);
-                   mUser2.setTypeface(null, Typeface.BOLD);
-                   break;
-               case 2:
-                   mUser2Score.setText(Integer.toString(i));
-                   mUser2.setTypeface(null, Typeface.NORMAL);
-                   mUser3.setTypeface(null, Typeface.BOLD);
-                   break;
-               case 3:
-                   mUser3Score.setText(Integer.toString(i));
-                   mUser3.setTypeface(null, Typeface.NORMAL);
-                   mUser4.setTypeface(null, Typeface.BOLD);
-                   break;
-               default:
-                   System.out.println("errrorrrrr");
-            }
-        }
+    private void winDialog(String name) {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.btn_star_big_on)
+                .setTitle("Winner!")
+                .setMessage("Congratulations " + name + "!" + " You won!")
+                .setPositiveButton("Exit", (dialog, which) -> exit())
+                .show();
     }
 
-    public void updateQuestion() {
-        if (mCurrentQuestion < 10) {
-            try {
-                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            mCurrentQuestion = 0; // Set index back to 0
-            refreshQuestions(); // Generate 10 new questions
-            try {
-                mQuestion.setText(mQuestions[mCurrentQuestion].getQuestion());
-                System.out.println(mQuestions[mCurrentQuestion].getQuestion());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        mSeeAnswer.setText(R.string.seeAnswer);
-        mCurrentQuestion++;
+    private void exit() {
+        mGameService.exit();
+        finish();
     }
 
-    public void initColors() {
-        int max = mGameService.getUsers().size();
-        List<User> players = mGameService.getUsers();
-        for (int i = 0; i < max; i++) {
-            players.get(i).setColor(mGameService.getPlayerColor(i));
-        }
-    }
+    //drawing methods:
 
-    public void resetBoard() {
-        mGameFragment.resetBoard();
-    }
-
-    public void playingLocation() {
+    private void playingLocation() {
         int currentPlayer = mGameService.currentPlayer();
         User player = mGameService.getUsers().get(currentPlayer);
-        System.out.println(player.getColor());
         mGameFragment.setPlayer(player.getColor(), player.getScore());
     }
 
-    public void prevLocations() {
+    private void prevLocations() {
         int currentPlayer = mGameService.currentPlayer();
         int max = mGameService.getUsers().size();
         for (int i = 0; i < max; i++) {
@@ -252,38 +163,111 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Exit")
-                .setMessage("Are you sure you want to go back to the menu? (data will be lost)")
-                .setPositiveButton("Yes", (dialog, which) -> finish())
-                .setNegativeButton("No", null)
-                .show();
+    //question methods:
+
+    private void updateQuestion() {
+        if (mCurrentQuestion < 10) {
+            try {
+                setQuestion();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            mCurrentQuestion = 0; // Set index back to 0
+            mQuestionApi.start(); // Generate 10 new questions
+            try {
+                mGameService.sem.acquire();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+            try {
+                setQuestion();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        mCurrentQuestion++;
     }
 
-    public void winDialog(String name) {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.btn_star_big_on)
-                .setTitle("Winner!")
-                .setMessage("Congratulations " + name + "!" + " You won!")
-                .setPositiveButton("Exit", (dialog, which) -> finish())
-                .show();
+    private void setQuestion() {
+        Question question = mQuestions[mCurrentQuestion];
+        if (!question.getQuestion().contains("Which") && !question.getQuestion().contains("these")) {
+            mQuestion.setText(question.getQuestion());
+            mSeeAnswer.setText(R.string.seeAnswer_button);
+        }
+        else {
+            mCurrentQuestion++;
+            updateQuestion();
+        }
     }
 
-    public void saveGame() {
-        //TODO implement
+    //user methods:
+
+    private void win() {
+        User user = mGameService.getUsers().get(mGameService.currentPlayer());
+        if (user.getScore() == 14) {
+            winDialog(user.getUsername());
+        }
     }
 
-    public void nextPlayer() {
-        //TODO implement
+    private void updateUsers(int i) {
+        List<User> players = mGameService.getUsers();
+        if (i == -1) {
+            mUser1.setText(players.get(0).toString());
+            mUser1Score.setText(DEFAULT_SCORE);
+            mUser2.setText(players.get(1).toString());
+            mUser2Score.setText(DEFAULT_SCORE);
+            if (players.size() > 2) {
+                mUser3.setText(players.get(2).toString());
+                mUser3Score.setText(DEFAULT_SCORE);
+            }
+            if (players.size() > 3) {
+                mUser4.setText(players.get(3).toString());
+                mUser4Score.setText(DEFAULT_SCORE);
+            }
+            mUser1.setTypeface(null, Typeface.BOLD);
+        }
+        else {
+            int currentPlayer = mGameService.currentPlayer();
+            int lastPlayer = players.size()-1;
+            switch (currentPlayer) {
+                case 0:
+                    switch (lastPlayer) {
+                        case 1:
+                            mUser2Score.setText(Integer.toString(i));
+                            mUser2.setTypeface(null, Typeface.NORMAL);
+                            break;
+                        case 2:
+                            mUser3Score.setText(Integer.toString(i));
+                            mUser3.setTypeface(null, Typeface.NORMAL);
+                            break;
+                        case 3:
+                            mUser4Score.setText(Integer.toString(i));
+                            mUser4.setTypeface(null, Typeface.NORMAL);
+                            break;
+                        default:
+                            System.out.println("errrorrrrr");
+                    }
+                    mUser1.setTypeface(null, Typeface.BOLD);
+                    break;
+                case 1:
+                    mUser1Score.setText(Integer.toString(i));
+                    mUser1.setTypeface(null, Typeface.NORMAL);
+                    mUser2.setTypeface(null, Typeface.BOLD);
+                    break;
+                case 2:
+                    mUser2Score.setText(Integer.toString(i));
+                    mUser2.setTypeface(null, Typeface.NORMAL);
+                    mUser3.setTypeface(null, Typeface.BOLD);
+                    break;
+                case 3:
+                    mUser3Score.setText(Integer.toString(i));
+                    mUser3.setTypeface(null, Typeface.NORMAL);
+                    mUser4.setTypeface(null, Typeface.BOLD);
+                    break;
+                default:
+                    System.out.println("errrorrrrr");
+            }
+        }
     }
-
-    public void play() {
-        //TODO implement
-    }
-
-
-    //TODO interface stuff
 }
