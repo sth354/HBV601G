@@ -30,7 +30,6 @@ public class GameFragment extends Fragment {
     }
 
     public void setPlayer(Paint color, int location) {
-        System.out.println(location);
         mGameBoard.addCircle(color, location);
         mGameBoard.invalidate();
     }

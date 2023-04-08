@@ -95,7 +95,6 @@ public class GameActivity extends AppCompatActivity {
             win();
             updateQuestion();
             updateUsers(mGameService.correctAnswer());
-            mGameFragment.resetBoard();
             prevLocations();
             playingLocation();
         });
@@ -153,6 +152,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void prevLocations() {
+        mGameFragment.resetBoard();
         int currentPlayer = mGameService.currentPlayer();
         int max = mGameService.getUsers().size();
         for (int i = 0; i < max; i++) {

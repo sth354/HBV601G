@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.view.View;
 import android.graphics.Paint;
 
+import java.util.Arrays;
+
 import hi.hbv601g.QuizGo.R;
 
 public class GameBoard extends View {
@@ -30,7 +32,7 @@ public class GameBoard extends View {
     };
 
     private final float mRadius = 25;
-    private static Circle[] circles;
+    private Circle[] circles;
     private Bitmap backgroundBitmap;
 
     public void addCircle(Paint color, int location) {
@@ -41,11 +43,13 @@ public class GameBoard extends View {
 
     public void clear() {
         circles = new Circle[16];
+        Arrays.fill(circles,null);
     }
 
     public GameBoard(Context context) {
         super(context);
         backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hrings);
+        circles = new Circle[16];
         clear();
     }
 
