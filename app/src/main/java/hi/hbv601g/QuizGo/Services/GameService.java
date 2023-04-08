@@ -62,8 +62,8 @@ public class GameService extends Service {
         return mUsers;
     }
 
-    public int currentPlayer() {
-        return currentPlayer;
+    public User currentPlayer() {
+        return mUsers.get(currentPlayer);
     }
 
     public Question[] getQuestions() throws IOException {

@@ -146,18 +146,16 @@ public class GameActivity extends AppCompatActivity {
     //drawing methods:
 
     private void playingLocation() {
-        int currentPlayer = mGameService.currentPlayer();
-        User player = mGameService.getUsers().get(currentPlayer);
+        User player = mGameService.currentPlayer();
         mGameFragment.setPlayer(player.getColor(), player.getScore());
     }
 
     private void prevLocations() {
         mGameFragment.resetBoard();
-        int currentPlayer = mGameService.currentPlayer();
-        int max = mGameService.getUsers().size();
-        for (int i = 0; i < max; i++) {
-            if (i != currentPlayer) {
-                User player = mGameService.getUsers().get(i);
+        List<User> players = mGameService.getUsers();
+        User currentPlayer = mGameService.currentPlayer();
+        for (User player: players) {
+            if (!player.equals(currentPlayer)) {
                 mGameFragment.setPlayer(player.getColor(), player.getScore());
             }
         }
@@ -204,9 +202,9 @@ public class GameActivity extends AppCompatActivity {
     //user methods:
 
     private void win() {
-        User user = mGameService.getUsers().get(mGameService.currentPlayer());
-        if (user.getScore() == 14) {
-            winDialog(user.getUsername());
+        User player = mGameService.currentPlayer();
+        if (player.getScore() == 14) {
+            winDialog(player.getUsername());
         }
     }
 
@@ -228,7 +226,8 @@ public class GameActivity extends AppCompatActivity {
             mUser1.setTypeface(null, Typeface.BOLD);
         }
         else {
-            int currentPlayer = mGameService.currentPlayer();
+            User player = mGameService.currentPlayer();
+            int currentPlayer = players.indexOf(player);
             int lastPlayer = players.size()-1;
             switch (currentPlayer) {
                 case 0:
