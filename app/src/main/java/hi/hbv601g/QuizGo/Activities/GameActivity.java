@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -45,6 +46,7 @@ public class GameActivity extends AppCompatActivity {
     //layout objects
     private GameFragment mGameFragment;
     private TextView mQuestion;
+    private Button mSkip;
     private Button mRight;
     private Button mWrong;
     private Button mSeeAnswer;
@@ -73,8 +75,12 @@ public class GameActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_game);
 
+        //force Portrait layout
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         //initializing view objects
         mQuestion = findViewById(R.id.question);
+        //mSkip = findViewById(R.id.skipButton);
         mRight = findViewById(R.id.rightButton);
         mWrong = findViewById(R.id.wrongButton);
         mSeeAnswer = findViewById(R.id.seeAnswerButton);
@@ -88,20 +94,10 @@ public class GameActivity extends AppCompatActivity {
         mUser4Score = findViewById(R.id.user4Score);
 
         //listeners
-        mSeeAnswer.setOnClickListener(view -> {
-            mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
-        });
-        mRight.setOnClickListener(view -> {
-            win();
-            updateQuestion();
-            updateUsers(mGameService.correctAnswer());
-            prevLocations();
-            playingLocation();
-        });
-        mWrong.setOnClickListener(view -> {
-            updateQuestion();
-            updateUsers(mGameService.currentScore());
-        });
+        mSkip.setOnClickListener(view -> skipQuestion());
+        mSeeAnswer.setOnClickListener(view -> setSeeAnswer());
+        mRight.setOnClickListener(view -> correct());
+        mWrong.setOnClickListener(view -> incorrect());
 
         //initialize users
         updateUsers(-1);
@@ -178,13 +174,13 @@ public class GameActivity extends AppCompatActivity {
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
             }
+
             try {
                 setQuestion();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        mCurrentQuestion++;
     }
 
     private void setQuestion() {
@@ -197,6 +193,30 @@ public class GameActivity extends AppCompatActivity {
             mCurrentQuestion++;
             updateQuestion();
         }
+    }
+
+    private void skipQuestion() {
+        mCurrentQuestion++;
+        updateQuestion();
+    }
+
+    private void setSeeAnswer() {
+        mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
+    }
+
+    private void correct() {
+        win();
+        mCurrentQuestion++;
+        updateQuestion();
+        updateUsers(mGameService.correctAnswer());
+        prevLocations();
+        playingLocation();
+    }
+
+    private void incorrect() {
+        mCurrentQuestion++;
+        updateQuestion();
+        updateUsers(mGameService.currentScore());
     }
 
     //user methods:
