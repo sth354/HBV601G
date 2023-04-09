@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class ScoreService extends Service {

@@ -1,4 +1,4 @@
-package hi.hbv601g.QuizGo.Activities;
+package hi.hbv601g.QuizGo.View;
 
 import android.content.Context;
 import android.graphics.Bitmap;

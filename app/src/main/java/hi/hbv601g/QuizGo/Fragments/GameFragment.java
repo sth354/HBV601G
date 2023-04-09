@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hi.hbv601g.QuizGo.Activities.GameBoard;
+import hi.hbv601g.QuizGo.View.GameBoard;
 
 public class GameFragment extends Fragment {
 

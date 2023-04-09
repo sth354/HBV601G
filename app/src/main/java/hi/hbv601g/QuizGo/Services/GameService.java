@@ -5,12 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.IBinder;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,11 +13,8 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -30,24 +22,19 @@ import java.util.concurrent.Semaphore;
 
 import hi.hbv601g.QuizGo.Activities.MenuActivity;
 import hi.hbv601g.QuizGo.Entities.Question;
-import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class GameService extends Service {
+    //variables
     public Semaphore sem;
-
-    private ScoreService mScoreService;
-    private SaveStateService mSaveStateService;
     private UserService mUserService;
     private List<User> mUsers;
-    private int mDifficulty;
-    private int currentPlayer;
+    private int mCurrentPlayer;
 
     public GameService() {
-        currentPlayer = 0;
+        mCurrentPlayer = 0;
         mUserService = MenuActivity.getUserService();
         mUsers = mUserService.getUsers();
-        setDifficulty(0);
 
         sem = new Semaphore(0);
     }
@@ -63,7 +50,7 @@ public class GameService extends Service {
     }
 
     public User currentPlayer() {
-        return mUsers.get(currentPlayer);
+        return mUsers.get(mCurrentPlayer);
     }
 
     public Question[] getQuestions() throws IOException {
@@ -89,42 +76,36 @@ public class GameService extends Service {
         return mQuestions;
     }
 
-    public void saveGame() {
-        //TODO implement
-    }
-
     public void exit() {
-        currentPlayer = 0;
+        mCurrentPlayer = 0;
         for (User player: mUsers) {
             player.setScore(0);
         }
     }
 
     public void nextPlayer() {
-        if (currentPlayer < mUsers.size() - 1) {
-            currentPlayer++;
+        if (mCurrentPlayer < mUsers.size() - 1) {
+            mCurrentPlayer++;
         }
         else {
-            currentPlayer = 0;
+            mCurrentPlayer = 0;
         }
     }
 
     public int correctAnswer() {
-        int score = mUsers.get(currentPlayer).getScore()+1;
-        mUsers.get(currentPlayer).setScore(score);
+        int score = mUsers.get(mCurrentPlayer).getScore()+1;
+        mUsers.get(mCurrentPlayer).setScore(score);
         nextPlayer();
         return score;
     }
 
     public int currentScore() {
-        int score = mUsers.get(currentPlayer).getScore();
+        int score = mUsers.get(mCurrentPlayer).getScore();
         nextPlayer();
         return score;
     }
 
-    public void setDifficulty(int difficulty) {
-        mDifficulty = difficulty;
-    }
+    //Color methods:
 
     public void initColors() {
         int max = mUsers.size();

@@ -4,9 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import hi.hbv601g.QuizGo.Entities.GameBoard;
-import hi.hbv601g.QuizGo.Entities.Score;
-
 public class SaveStateService extends Service {
     public SaveStateService() {
     }
