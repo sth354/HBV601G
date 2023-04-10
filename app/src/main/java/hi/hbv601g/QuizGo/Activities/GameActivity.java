@@ -1,5 +1,6 @@
 package hi.hbv601g.QuizGo.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -86,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
         mUser4Score = findViewById(R.id.user4Score);
 
         //listeners
-        mSkip.setOnClickListener(view -> skipQuestion());
+        //mSkip.setOnClickListener(view -> skipQuestion());
         mSeeAnswer.setOnClickListener(view -> setSeeAnswer());
         mRight.setOnClickListener(view -> correct());
         mWrong.setOnClickListener(view -> incorrect());
@@ -220,7 +221,7 @@ public class GameActivity extends AppCompatActivity {
      * Handler for the See Answer button.
      */
     private void setSeeAnswer() {
-        mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
+        mSeeAnswer.setText(mQuestions[mCurrentQuestion].getAnswer());
     }
 
     /**
@@ -259,6 +260,7 @@ public class GameActivity extends AppCompatActivity {
     /**
      * Updates the current playing users score, and makes the next players name bold.
      */
+    @SuppressLint("SetTextI18n")
     private void updateUsers(int i) {
         List<User> players = mGameService.getUsers();
         if (i == -1) {

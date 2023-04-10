@@ -31,8 +31,6 @@ public class UserService extends Service {
 
     public List<User> mUsersPlaying;
 
-    private ScoreService mScoreService;
-
     public UserService() throws MalformedURLException {
         mUsersPlaying = new ArrayList<>();
     }
