@@ -1,52 +1,26 @@
 package hi.hbv601g.QuizGo.Services;
 
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
-import android.util.Log;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import hi.hbv601g.QuizGo.Entities.Score;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
@@ -56,8 +30,6 @@ public class UserService extends Service {
     private final int mMaxPlayers = 4;
 
     public List<User> mUsersPlaying;
-
-    private ScoreService mScoreService;
 
     public UserService() throws MalformedURLException {
         mUsersPlaying = new ArrayList<>();
@@ -143,11 +115,6 @@ public class UserService extends Service {
 
     public void logout(int n) {
         mUsersPlaying.remove(n);
-    }
-
-    public Score[] getScores(User[] users) {
-        //TODO implement
-        return null;
     }
 
     public List<User> getUsers() {

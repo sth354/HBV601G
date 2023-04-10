@@ -1,29 +1,22 @@
 package hi.hbv601g.QuizGo.Activities;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
-import android.graphics.fonts.Font;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
 
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.Fragments.GameFragment;
-import hi.hbv601g.QuizGo.Services.GameService;
 import hi.hbv601g.QuizGo.R;
+import hi.hbv601g.QuizGo.Services.GameService;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -32,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
     private Question[] mQuestions;
     private int mCurrentQuestion;
 
+    //constants
     private static final String DEFAULT_SCORE = "0";
 
     private final Thread mQuestionApi = new Thread(() -> {
@@ -42,9 +36,10 @@ public class GameActivity extends AppCompatActivity {
         }
     });
 
-    //layout objects
+    //interface variables
     private GameFragment mGameFragment;
     private TextView mQuestion;
+    private Button mSkip;
     private Button mRight;
     private Button mWrong;
     private Button mSeeAnswer;
@@ -73,8 +68,12 @@ public class GameActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_game);
 
+        //force Portrait layout
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         //initializing view objects
         mQuestion = findViewById(R.id.question);
+        //mSkip = findViewById(R.id.skipButton);
         mRight = findViewById(R.id.rightButton);
         mWrong = findViewById(R.id.wrongButton);
         mSeeAnswer = findViewById(R.id.seeAnswerButton);
@@ -88,21 +87,10 @@ public class GameActivity extends AppCompatActivity {
         mUser4Score = findViewById(R.id.user4Score);
 
         //listeners
-        mSeeAnswer.setOnClickListener(view -> {
-            mSeeAnswer.setText(mQuestions[mCurrentQuestion-1].getAnswer());
-        });
-        mRight.setOnClickListener(view -> {
-            win();
-            updateQuestion();
-            updateUsers(mGameService.correctAnswer());
-            mGameFragment.resetBoard();
-            prevLocations();
-            playingLocation();
-        });
-        mWrong.setOnClickListener(view -> {
-            updateQuestion();
-            updateUsers(mGameService.currentScore());
-        });
+        //mSkip.setOnClickListener(view -> skipQuestion());
+        mSeeAnswer.setOnClickListener(view -> setSeeAnswer());
+        mRight.setOnClickListener(view -> correct());
+        mWrong.setOnClickListener(view -> incorrect());
 
         //initialize users
         updateUsers(-1);
@@ -130,6 +118,9 @@ public class GameActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Creates and displays the win screen dialog.
+     */
     private void winDialog(String name) {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.btn_star_big_on)
@@ -139,6 +130,9 @@ public class GameActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Exits the activity.
+     */
     private void exit() {
         mGameService.exit();
         finish();
@@ -146,18 +140,23 @@ public class GameActivity extends AppCompatActivity {
 
     //drawing methods:
 
+    /**
+     * Makes the fragment draw the current player.
+     */
     private void playingLocation() {
-        int currentPlayer = mGameService.currentPlayer();
-        User player = mGameService.getUsers().get(currentPlayer);
+        User player = mGameService.currentPlayer();
         mGameFragment.setPlayer(player.getColor(), player.getScore());
     }
 
+    /**
+     * Makes the fragment draw the other players locations.
+     */
     private void prevLocations() {
-        int currentPlayer = mGameService.currentPlayer();
-        int max = mGameService.getUsers().size();
-        for (int i = 0; i < max; i++) {
-            if (i != currentPlayer) {
-                User player = mGameService.getUsers().get(i);
+        mGameFragment.resetBoard();
+        List<User> players = mGameService.getUsers();
+        User currentPlayer = mGameService.currentPlayer();
+        for (User player: players) {
+            if (!player.equals(currentPlayer)) {
                 mGameFragment.setPlayer(player.getColor(), player.getScore());
             }
         }
@@ -165,6 +164,9 @@ public class GameActivity extends AppCompatActivity {
 
     //question methods:
 
+    /**
+     * Checks if 10 questions have been seen, gets more if needed.
+     */
     private void updateQuestion() {
         if (mCurrentQuestion < 10) {
             try {
@@ -180,15 +182,19 @@ public class GameActivity extends AppCompatActivity {
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
             }
+
             try {
                 setQuestion();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        mCurrentQuestion++;
     }
 
+    /**
+     * Displays the current question.
+     * (also checks for multiple choice quesions)
+     */
     private void setQuestion() {
         Question question = mQuestions[mCurrentQuestion];
         if (!question.getQuestion().contains("Which") && !question.getQuestion().contains("these")) {
@@ -201,15 +207,60 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Skips the current question.
+     */
+    private void skipQuestion() {
+        mCurrentQuestion++;
+        updateQuestion();
+    }
+
+    //Button handlers:
+
+    /**
+     * Handler for the See Answer button.
+     */
+    private void setSeeAnswer() {
+        mSeeAnswer.setText(mQuestions[mCurrentQuestion].getAnswer());
+    }
+
+    /**
+     * Handler for the Right button.
+     */
+    private void correct() {
+        win();
+        mCurrentQuestion++;
+        updateQuestion();
+        updateUsers(mGameService.correctAnswer());
+        prevLocations();
+        playingLocation();
+    }
+
+    /**
+     * Handler for the Wrong button.
+     */
+    private void incorrect() {
+        mCurrentQuestion++;
+        updateQuestion();
+        updateUsers(mGameService.currentScore());
+    }
+
     //user methods:
 
+    /**
+     * Checks if the current player has won.
+     */
     private void win() {
-        User user = mGameService.getUsers().get(mGameService.currentPlayer());
-        if (user.getScore() == 14) {
-            winDialog(user.getUsername());
+        User player = mGameService.currentPlayer();
+        if (player.getScore() == 14) {
+            winDialog(player.getUsername());
         }
     }
 
+    /**
+     * Updates the current playing users score, and makes the next players name bold.
+     */
+    @SuppressLint("SetTextI18n")
     private void updateUsers(int i) {
         List<User> players = mGameService.getUsers();
         if (i == -1) {
@@ -228,7 +279,8 @@ public class GameActivity extends AppCompatActivity {
             mUser1.setTypeface(null, Typeface.BOLD);
         }
         else {
-            int currentPlayer = mGameService.currentPlayer();
+            User player = mGameService.currentPlayer();
+            int currentPlayer = players.indexOf(player);
             int lastPlayer = players.size()-1;
             switch (currentPlayer) {
                 case 0:

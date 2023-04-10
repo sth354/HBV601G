@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hi.hbv601g.QuizGo.Activities.GameBoard;
+import hi.hbv601g.QuizGo.View.GameBoard;
 
 public class GameFragment extends Fragment {
 
@@ -30,7 +30,6 @@ public class GameFragment extends Fragment {
     }
 
     public void setPlayer(Paint color, int location) {
-        System.out.println(location);
         mGameBoard.addCircle(color, location);
         mGameBoard.invalidate();
     }

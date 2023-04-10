@@ -32,15 +32,6 @@
         app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/loadButton"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="@string/loadGame"
-        android:textColor="#1824FC"
-        android:textSize="20sp"
-        app:backgroundTint="#FF9A16" />
-
-    <Button
         android:id="@+id/userButton"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
@@ -49,12 +40,4 @@
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 
-    <Button
-        android:id="@+id/scoreButton"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="@string/viewScores"
-        android:textColor="#1824FC"
-        android:textSize="20sp"
-        app:backgroundTint="#FF9A16" />
 </LinearLayout>
