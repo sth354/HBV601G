@@ -27,15 +27,16 @@ import hi.hbv601g.QuizGo.Entities.User;
 public class GameService extends Service {
     //variables
     public Semaphore sem;
-    private UserService mUserService;
-    private List<User> mUsers;
     private int mCurrentPlayer;
+
+    //constants
+    private final List<User> mUsers;
 
     public GameService() {
         mCurrentPlayer = 0;
-        mUserService = MenuActivity.getUserService();
-        mUsers = mUserService.getUsers();
+        mUsers = MenuActivity.getUserService().getUsers();
 
+        //semaphore for question api-call
         sem = new Semaphore(0);
     }
 
@@ -45,14 +46,26 @@ public class GameService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /**
+     * Returns all current players.
+     * @return List of users currently playing.
+     */
     public List<User> getUsers() {
         return mUsers;
     }
 
+    /**
+     * Returns the current player.
+     * @return Current player.
+     */
     public User currentPlayer() {
         return mUsers.get(mCurrentPlayer);
     }
 
+    /**
+     * Gets question from a trivia-api.
+     * @return Array of 10 questions.
+     */
     public Question[] getQuestions() throws IOException {
         // Make the API call and retrieve the JSON data
         String apiUrl = "https://the-trivia-api.com/api/questions?limit=10";
@@ -76,6 +89,9 @@ public class GameService extends Service {
         return mQuestions;
     }
 
+    /**
+     * Resets all values.
+     */
     public void exit() {
         mCurrentPlayer = 0;
         for (User player: mUsers) {
@@ -83,6 +99,9 @@ public class GameService extends Service {
         }
     }
 
+    /**
+     * Increments the player counter; lets the next player have their turn.
+     */
     public void nextPlayer() {
         if (mCurrentPlayer < mUsers.size() - 1) {
             mCurrentPlayer++;
@@ -92,6 +111,10 @@ public class GameService extends Service {
         }
     }
 
+    /**
+     * Increments the current players score.
+     * @return The new score.
+     */
     public int correctAnswer() {
         int score = mUsers.get(mCurrentPlayer).getScore()+1;
         mUsers.get(mCurrentPlayer).setScore(score);
@@ -99,6 +122,10 @@ public class GameService extends Service {
         return score;
     }
 
+    /**
+     * Returns the current players score, and gives the turn to the next player.
+     * @return The current score.
+     */
     public int currentScore() {
         int score = mUsers.get(mCurrentPlayer).getScore();
         nextPlayer();
@@ -107,6 +134,9 @@ public class GameService extends Service {
 
     //Color methods:
 
+    /**
+     * Initializes colors for all players.
+     */
     public void initColors() {
         int max = mUsers.size();
         for (int i = 0; i < max; i++) {
@@ -114,6 +144,11 @@ public class GameService extends Service {
         }
     }
 
+    /**
+     * Designates the specific color for each user.
+     * @param currentPlayer integer that identifies their role
+     * @return The color of the current player.
+     */
     public Paint getPlayerColor(int currentPlayer) {
         Paint color = new Paint();
         color.setStyle(Paint.Style.FILL);

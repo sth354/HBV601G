@@ -1,9 +1,5 @@
 package hi.hbv601g.QuizGo.Services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
@@ -118,11 +117,6 @@ public class UserService extends Service {
 
     public void logout(int n) {
         mUsersPlaying.remove(n);
-    }
-
-    public Score[] getScores(User[] users) {
-        //TODO implement
-        return null;
     }
 
     public List<User> getUsers() {

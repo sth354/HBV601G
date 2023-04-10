@@ -1,30 +1,21 @@
 package hi.hbv601g.QuizGo.Activities;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.fonts.Font;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
 
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.Fragments.GameFragment;
-import hi.hbv601g.QuizGo.Services.GameService;
 import hi.hbv601g.QuizGo.R;
+import hi.hbv601g.QuizGo.Services.GameService;
 
 public class GameActivity extends AppCompatActivity {
 

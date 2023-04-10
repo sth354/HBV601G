@@ -16,15 +16,18 @@ import hi.hbv601g.QuizGo.R;
 import hi.hbv601g.QuizGo.Services.UserService;
 
 public class MenuActivity extends AppCompatActivity {
-
+    //public UserService
     private static UserService mUserService;
+    public static UserService getUserService() {
+        return mUserService;
+    }
 
+    //variables
     private List<User> mUsers;
 
-    private Button playButton;
-    private Button loadButton;
-    private Button loginButton;
-    private Button scoreButton;
+    //interface variables
+    private Button mPlayButton;
+    private Button mLoginButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,29 +41,18 @@ public class MenuActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        updatePlayers();
 
-        playButton = findViewById(R.id.playButton);
-        playButton.setOnClickListener(view -> {
-            playGame();
-        });
+        mPlayButton = findViewById(R.id.playButton);
+        mPlayButton.setOnClickListener(view -> playGame());
 
-        loadButton = findViewById(R.id.loadButton);
-
-        loginButton = findViewById(R.id.userButton);
-        loginButton.setOnClickListener(view -> {
-            choosePlayers();
-        });
-
-        scoreButton = findViewById(R.id.scoreButton);
+        mLoginButton = findViewById(R.id.userButton);
+        mLoginButton.setOnClickListener(view -> choosePlayers());
     }
 
-    public static UserService getUserService() {
-        return mUserService;
-    }
-
-
-    public void playGame() {
+    /**
+     * Starts GameActivity if there are enough players logged in.
+     */
+    private void playGame() {
         if (mUserService.gameReady()) {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
@@ -70,29 +62,19 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    public void loadGame() {
-        //TODO implement
-    }
-
-    public void choosePlayers() {
-        //temporary
+    /**
+     * Starts UserActivity.
+     */
+    private void choosePlayers() {
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
-
-        //TODO implement
     }
 
-    public void viewScores() {
-        //TODO implement
-    }
-
-    private void updatePlayers() {
-        mUsers = mUserService.getUsers();
-    }
-
+    /**
+     * Displays a toast with a given string.
+     * @param toast integer code for the given string
+     */
     private void displayToast(int toast) {
         Toast.makeText(MenuActivity.this, toast, Toast.LENGTH_SHORT).show();
     }
-
-    //TODO interface stuff
 }
