@@ -1,9 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context="hi.hbv601g.QuizGo.CheatActivity"/>
+    android:background="#FF9A16"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="321dp"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:textColor="#1824FC"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="Question" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/rightButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/right_button"
+            app:backgroundTint="#FF9A16" />
+
+        <Button
+            android:id="@+id/wrongButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/wrong_button"
+            app:backgroundTint="#FF9A16" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:name="hi.hbv601g.QuizGo.Fragments.GameFragment"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        tools:context=".GameActivity"
+        tools:layout="@layout/fragment_game" />
+
+
+    <Button
+        android:id="@+id/seeAnswerButton"
+        android:layout_width="302dp"
+        android:layout_height="48dp"
+        android:text="@string/seeAnswer_button"
+        app:backgroundTint="#FF9A16" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1824FC"
+                android:padding="5dp"
+                tools:text="User"/>
+
+            <TextView
+                android:id="@+id/user1Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1824FC"
+                tools:text="0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1824FC"
+                android:padding="5dp"
+                tools:text="User"/>
+
+            <TextView
+                android:id="@+id/user2Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1824FC"
+                tools:text="0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1824FC"
+                android:padding="5dp"
+                tools:text="User"/>
+
+            <TextView
+                android:id="@+id/user3Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1824FC"
+                tools:text="0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1824FC"
+                android:padding="5dp"
+                tools:text="User"/>
+
+            <TextView
+                android:id="@+id/user4Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#1824FC"
+                tools:text="0"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
