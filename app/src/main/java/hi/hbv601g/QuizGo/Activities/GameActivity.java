@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -59,13 +60,6 @@ public class GameActivity extends AppCompatActivity {
         mGameFragment = new GameFragment();
         mGameService = new GameService();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, mGameFragment.getClass(), null)
-                    .commit();
-        }
-
         setContentView(R.layout.activity_game);
 
         //force Portrait layout
@@ -103,6 +97,13 @@ public class GameActivity extends AppCompatActivity {
         mCurrentQuestion = 10;
         mQuestions = new Question[mCurrentQuestion];
         updateQuestion();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_container, mGameFragment.getClass(), null)
+                    .commit();
+        }
     }
 
     //interface methods/handlers:
@@ -146,6 +147,7 @@ public class GameActivity extends AppCompatActivity {
     private void playingLocation() {
         User player = mGameService.currentPlayer();
         mGameFragment.setPlayer(player.getColor(), player.getScore());
+        Log.d("Placement","Playing: " + player.getScore());
     }
 
     /**
@@ -158,6 +160,7 @@ public class GameActivity extends AppCompatActivity {
         for (User player: players) {
             if (!player.equals(currentPlayer)) {
                 mGameFragment.setPlayer(player.getColor(), player.getScore());
+                Log.d("Placement","Previous: " + player.getScore());
             }
         }
     }

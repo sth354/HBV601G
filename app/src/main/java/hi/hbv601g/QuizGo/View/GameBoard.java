@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
 import android.graphics.Paint;
 
@@ -39,18 +40,19 @@ public class GameBoard extends View {
         float x = mCircleCoordinates[location][0];
         float y = mCircleCoordinates[location][1];
         circles[location] = new Circle(x, y, mRadius, color);
+        Log.d("Gameboard","Adding circle at location: " + location);
     }
 
     public void clear() {
         circles = new Circle[16];
-        Arrays.fill(circles,null);
+        Arrays.fill(circles, null);
+        Log.d("Gameboard","Clearing");
     }
 
     public GameBoard(Context context) {
         super(context);
         backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hrings);
         circles = new Circle[16];
-        clear();
     }
 
     public class Circle {
@@ -74,9 +76,11 @@ public class GameBoard extends View {
         // Draw the background image on the canvas
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 
-        for (Circle circle : circles) {
+        for (int i = 0; i < circles.length; i++) {
+            Circle circle = circles[i];
             if (circle != null) {
                 canvas.drawCircle(circle.x, circle.y, circle.radius, circle.color);
+                Log.d("Gameboard","Drawing circle at position: " + i);
             }
         }
     }
