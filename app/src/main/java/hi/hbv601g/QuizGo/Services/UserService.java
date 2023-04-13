@@ -21,6 +21,12 @@ import java.util.Scanner;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
@@ -28,6 +34,13 @@ public class UserService extends Service {
     private final String userFile = "/data/user/0/hi.hbv601g.QuizGo/files/users.txt";
     private final int mMinPlayers = 2;
     private final int mMaxPlayers = 4;
+    private URL url;
+    private HttpURLConnection con;
+    private String jsonInputString;
+
+    private String username;
+
+    private String password;
 
     public List<User> mUsersPlaying;
 
@@ -41,9 +54,7 @@ public class UserService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private URL url;
-    private HttpURLConnection con;
-    private String jsonInputString;
+
     public User register(User user) throws IOException {
         //TODO replace with database call
         if (usernameTaken(user.getUsername())) {
@@ -101,16 +112,41 @@ public class UserService extends Service {
      * @return user if username and password match, otherwise null
      */
     public User login(User user) {
-        User foundUser = findUser(user);
-        if (foundUser != null && !foundUser.getUsername().equals("")) {
-            if (!maxPlayers()) {
-                mUsersPlaying.add(foundUser);
+        if (user != null &&
+            !user.getUsername().equals("") &&
+            !maxPlayers()
+        ) {
+            username = user.getUsername();
+            password = user.getPassword();
+            try {
+                URL url = new URL("https://quizgo-api-server.onrender.com/users/" + username);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setRequestProperty("Accept", "application/json");
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                JSONArray jsonArray = new JSONArray(response.toString());
+                JSONObject userJson = jsonArray.getJSONObject(0);
+                String jsonUsername = userJson.getString("username");
+                String jsonPassword = userJson.getString("password");
+                if (jsonUsername.equals(username) && jsonPassword.equals(password)) {
+                    mUsersPlaying.add(user);
+                    return user;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         }
-        return foundUser;
-
-        //TODO replace with database call
-
+        return null;
     }
 
     public void logout(int n) {
