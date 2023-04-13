@@ -2,6 +2,7 @@ package hi.hbv601g.QuizGo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,9 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Arrays;
 
-import hi.hbv601g.QuizGo.Entities.Score;
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.Services.UserService;
 import hi.hbv601g.QuizGo.R;
@@ -37,6 +36,9 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        //force Portrait layout
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mUserService = MenuActivity.getUserService();
 
@@ -90,7 +92,7 @@ public class UserActivity extends AppCompatActivity {
         String pw = mPassword.getText().toString();
         if (!name.equals("") && !pw.equals("")) {
             // New thread to make Api POST call
-            Thread userApi = new Thread(new Runnable() {
+            Thread registerApi = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -107,26 +109,36 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
             });
-            userApi.start();
+            registerApi.start();
         }
     }
 
     public void loginUser() {
         String name = mUsername.getText().toString();
         String pw = mPassword.getText().toString();
-
         if (!name.equals("") && !pw.equals("")) {
-            User user = mUserService.login(new User(name,pw));
-            if (user == null) {
-                displayToast(R.string.loginFailedToast);
-            }
-            else if (user.getUsername().equals("")) {
-                displayToast(R.string.alreadyLoggedInToast);
-            }
-            else {
-                displayUser(user);
-                resetInfo();
-            }
+            // New thread to make Api GET call
+            Thread loginApi = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        User user = mUserService.login(new User(name,pw));
+                        if (user == null) {
+                            displayToast(R.string.loginFailedToast);
+                        }
+                        else if (user.getUsername().equals("")) {
+                            displayToast(R.string.alreadyLoggedInToast);
+                        }
+                        else {
+                            displayUser(user);
+                            resetInfo();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            loginApi.start();
         }
     }
 

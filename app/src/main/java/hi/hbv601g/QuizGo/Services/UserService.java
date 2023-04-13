@@ -1,52 +1,32 @@
 package hi.hbv601g.QuizGo.Services;
 
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
-import android.util.Log;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import hi.hbv601g.QuizGo.Entities.Score;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
@@ -54,10 +34,15 @@ public class UserService extends Service {
     private final String userFile = "/data/user/0/hi.hbv601g.QuizGo/files/users.txt";
     private final int mMinPlayers = 2;
     private final int mMaxPlayers = 4;
+    private URL url;
+    private HttpURLConnection con;
+    private String jsonInputString;
+
+    private String username;
+
+    private String password;
 
     public List<User> mUsersPlaying;
-
-    private ScoreService mScoreService;
 
     public UserService() throws MalformedURLException {
         mUsersPlaying = new ArrayList<>();
@@ -69,9 +54,7 @@ public class UserService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private URL url;
-    private HttpURLConnection con;
-    private String jsonInputString;
+
     public User register(User user) throws IOException {
         //TODO replace with database call
         if (usernameTaken(user.getUsername())) {
@@ -129,25 +112,45 @@ public class UserService extends Service {
      * @return user if username and password match, otherwise null
      */
     public User login(User user) {
-        User foundUser = findUser(user);
-        if (foundUser != null && !foundUser.getUsername().equals("")) {
-            if (!maxPlayers()) {
-                mUsersPlaying.add(foundUser);
+        if (user != null &&
+            !user.getUsername().equals("") &&
+            !maxPlayers()
+        ) {
+            username = user.getUsername();
+            password = user.getPassword();
+            try {
+                URL url = new URL("https://quizgo-api-server.onrender.com/users/" + username);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setRequestProperty("Accept", "application/json");
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                JSONArray jsonArray = new JSONArray(response.toString());
+                JSONObject userJson = jsonArray.getJSONObject(0);
+                String jsonUsername = userJson.getString("username");
+                String jsonPassword = userJson.getString("password");
+                if (jsonUsername.equals(username) && jsonPassword.equals(password)) {
+                    mUsersPlaying.add(user);
+                    return user;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
         }
-        return foundUser;
-
-        //TODO replace with database call
-
+        return null;
     }
 
     public void logout(int n) {
         mUsersPlaying.remove(n);
-    }
-
-    public Score[] getScores(User[] users) {
-        //TODO implement
-        return null;
     }
 
     public List<User> getUsers() {
