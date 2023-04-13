@@ -91,7 +91,7 @@ public class UserActivity extends AppCompatActivity {
         String pw = mPassword.getText().toString();
         if (!name.equals("") && !pw.equals("")) {
             // New thread to make Api POST call
-            Thread userApi = new Thread(new Runnable() {
+            Thread registerApi = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -108,7 +108,7 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
             });
-            userApi.start();
+            registerApi.start();
         }
     }
 
@@ -117,17 +117,27 @@ public class UserActivity extends AppCompatActivity {
         String pw = mPassword.getText().toString();
 
         if (!name.equals("") && !pw.equals("")) {
-            User user = mUserService.login(new User(name,pw));
-            if (user == null) {
-                displayToast(R.string.loginFailedToast);
-            }
-            else if (user.getUsername().equals("")) {
-                displayToast(R.string.alreadyLoggedInToast);
-            }
-            else {
-                displayUser(user);
-                resetInfo();
-            }
+            Thread loginApi = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        User user = mUserService.login(new User(name,pw));
+                        if (user == null) {
+                            displayToast(R.string.loginFailedToast);
+                        }
+                        else if (user.getUsername().equals("")) {
+                            displayToast(R.string.alreadyLoggedInToast);
+                        }
+                        else {
+                            displayUser(user);
+                            resetInfo();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            loginApi.start();
         }
     }
 
