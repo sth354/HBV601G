@@ -21,6 +21,7 @@ import java.util.Scanner;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,26 +112,6 @@ public class UserService extends Service {
      * @return user if username and password match, otherwise null
      */
     public User login(User user) {
-        /*
-
-        if (user != null && !foundUser.getUsername().equals("")) {
-            if (!maxPlayers()) {
-                mUsersPlaying.add(foundUser);
-            }
-        }
-        return foundUser;
-        */
-
-        /*
-
-        if (user != null &&
-            !user.getUsername().equals("") &&
-            !maxPlayers()) {
-
-        }
-        mUsersPlaying.add(user);
-        return foundUser;
-        */
         if (user != null &&
             !user.getUsername().equals("") &&
             !maxPlayers()
@@ -155,7 +136,7 @@ public class UserService extends Service {
                 JSONObject userJson = jsonArray.getJSONObject(0);
                 String jsonUsername = userJson.getString("username");
                 String jsonPassword = userJson.getString("password");
-                if (jsonUsername == username && jsonPassword == password) {
+                if (jsonUsername.equals(username) && jsonPassword.equals(password)) {
                     mUsersPlaying.add(user);
                     return user;
                 }

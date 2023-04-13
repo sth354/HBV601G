@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -115,8 +116,8 @@ public class UserActivity extends AppCompatActivity {
     public void loginUser() {
         String name = mUsername.getText().toString();
         String pw = mPassword.getText().toString();
-
         if (!name.equals("") && !pw.equals("")) {
+            // New thread to make Api GET call
             Thread loginApi = new Thread(new Runnable() {
                 @Override
                 public void run() {
