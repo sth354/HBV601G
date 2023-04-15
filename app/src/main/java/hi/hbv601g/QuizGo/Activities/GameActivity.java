@@ -115,6 +115,9 @@ public class GameActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Creates and displays the start game dialog.
+     */
     public void startDialog() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)

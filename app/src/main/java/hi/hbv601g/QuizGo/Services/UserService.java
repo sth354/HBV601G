@@ -22,7 +22,6 @@ import java.util.concurrent.Semaphore;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,7 +105,7 @@ public class UserService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (!maxPlayers()) {
+        if (maxPlayers()) {
             mUsersPlaying.add(newUser);
             mRegisterSem.release();
             return newUser;
@@ -121,7 +120,7 @@ public class UserService extends Service {
      * @return user if username and password match, otherwise null
      */
     public User login(User user) {
-        if (!maxPlayers()) {
+        if (maxPlayers()) {
             username = user.getUsername();
             password = user.getPassword();
             try {
@@ -236,7 +235,7 @@ public class UserService extends Service {
         return false;
     }
 
-    private boolean maxPlayers() {
-        return mUsersPlaying.size() == mMaxPlayers;
+    public boolean maxPlayers() {
+        return mUsersPlaying.size() != mMaxPlayers;
     }
 }

@@ -28,5 +28,6 @@
     <string name="loginFailedToast" translatable="false">Incorrect username or password</string>
     <string name="alreadyLoggedInToast" translatable="false">Already logged in</string>
     <string name="minPlayersToast" translatable="false">At least 2 players needed to play</string>
+    <string name="maxPlayerToast" translatable="false">Maximum player count reached</string>
 
 </resources>
