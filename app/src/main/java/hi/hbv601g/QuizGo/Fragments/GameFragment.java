@@ -43,12 +43,4 @@ public class GameFragment extends Fragment {
     public void resetBoard() {
         mGameBoard.clear();
     }
-
-    private void fixer() {
-        try {
-            sem.acquire();
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
-    }
 }

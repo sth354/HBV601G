@@ -60,6 +60,13 @@ public class GameActivity extends AppCompatActivity {
         mGameFragment = new GameFragment();
         mGameService = new GameService();
 
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_container, mGameFragment.getClass(), null)
+                    .commit();
+        }
+
         setContentView(R.layout.activity_game);
 
         //force Portrait layout
@@ -91,19 +98,8 @@ public class GameActivity extends AppCompatActivity {
 
         //initialize gameboard
         mGameService.initColors();
-        playingLocation();
 
-        //initialize questions
-        mCurrentQuestion = 10;
-        mQuestions = new Question[mCurrentQuestion];
-        updateQuestion();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_container, mGameFragment.getClass(), null)
-                    .commit();
-        }
+        startDialog();
     }
 
     //interface methods/handlers:
@@ -119,6 +115,16 @@ public class GameActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void startDialog() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Game start!")
+                .setMessage("Start the game?")
+                .setPositiveButton("Yes", (dialog, which) -> start())
+                .setNegativeButton("No", (dialog, which) -> exit())
+                .show();
+    }
+
     /**
      * Creates and displays the win screen dialog.
      */
@@ -129,6 +135,15 @@ public class GameActivity extends AppCompatActivity {
                 .setMessage("Congratulations " + name + "!" + " You won!")
                 .setPositiveButton("Exit", (dialog, which) -> exit())
                 .show();
+    }
+
+    private void start() {
+        playingLocation();
+
+        //initialize questions
+        mCurrentQuestion = 10;
+        mQuestions = new Question[mCurrentQuestion];
+        updateQuestion();
     }
 
     /**
@@ -172,11 +187,7 @@ public class GameActivity extends AppCompatActivity {
      */
     private void updateQuestion() {
         if (mCurrentQuestion < 10) {
-            try {
-                setQuestion();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            setQuestion();
         } else {
             mCurrentQuestion = 0; // Set index back to 0
             mQuestionApi.start(); // Generate 10 new questions
@@ -185,12 +196,7 @@ public class GameActivity extends AppCompatActivity {
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
             }
-
-            try {
-                setQuestion();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            setQuestion();
         }
     }
 
@@ -200,7 +206,11 @@ public class GameActivity extends AppCompatActivity {
      */
     private void setQuestion() {
         Question question = mQuestions[mCurrentQuestion];
-        if (!question.getQuestion().contains("Which") && !question.getQuestion().contains("these")) {
+        if (question == null) {
+            mCurrentQuestion = 10;
+            updateQuestion();
+        }
+        else if (!question.getQuestion().contains("Which") && !question.getQuestion().contains("these")) {
             mQuestion.setText(question.getQuestion());
             mSeeAnswer.setText(R.string.seeAnswer_button);
         }
