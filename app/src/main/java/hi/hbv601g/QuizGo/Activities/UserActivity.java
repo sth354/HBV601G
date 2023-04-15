@@ -13,16 +13,24 @@ import hi.hbv601g.QuizGo.Services.UserService;
 import hi.hbv601g.QuizGo.R;
 import android.content.Intent;
 import java.net.MalformedURLException;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UserActivity extends AppCompatActivity {
     private static UserService mUserService;
+    public static UserService getUserService() {
+        return mUserService;
+    }
+
+    private User mUser;
+
     private Button mLoginButton;
     private Button mLogoutButton;
     private Button mRegisterButton;
+    private Button mPlayButton;
 
     //TODO delete this
     private Button mTestButton;
+
     private EditText mUsername;
     private EditText mPassword;
     private TextView mUser1;
@@ -34,9 +42,17 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        if (mUserService == null) {
+            try {
+                mUserService = new UserService();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         //force Portrait layout
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //force Portrait layout
 
         mUsername = findViewById(R.id.username);
         mPassword = findViewById(R.id.password);
@@ -44,69 +60,52 @@ public class UserActivity extends AppCompatActivity {
         mUser2 = findViewById(R.id.user2);
         mUser3 = findViewById(R.id.user3);
         mUser4 = findViewById(R.id.user4);
-
-        try {
-            mUserService = new UserService();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
         mLoginButton = findViewById(R.id.loginButton);
-        mLoginButton.setOnClickListener(view -> loginUser());
-
         mRegisterButton = findViewById(R.id.registerButton);
-        mRegisterButton.setOnClickListener(view -> {
-            try {
-                registerUser();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        mPlayButton = findViewById(R.id.playButton);
 
-        //TODO delete this
+        mLoginButton.setOnClickListener(view -> loginUser());
+        mRegisterButton.setOnClickListener(view -> registerUser());
+        mPlayButton.setOnClickListener(view -> playGame());
+
+        //TODO delete this (for testing only)
         mTestButton = findViewById(R.id.testButton);
         mTestButton.setOnClickListener(view -> {
             mUsername.setText("Play1");
             mPassword.setText("password");
-            try {
-                registerUser();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            registerUser();
             loginUser();
             mUsername.setText("Play2");
             mPassword.setText("password");
-            try {
-                registerUser();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            registerUser();
             loginUser();
         });
     }
 
-    public void registerUser() throws IOException {
+    public void registerUser() {
         String name = mUsername.getText().toString();
         String pw = mPassword.getText().toString();
         if (!name.equals("") && !pw.equals("")) {
+
             // New thread to make Api POST call
-            Thread registerApi = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        User user = mUserService.register(new User(name, pw));
-                        if (user != null) {
-                            displayUser(user);
-                            resetInfo();
-                        } else {
-                            displayToast(R.string.takenToast);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            Thread registerApi = new Thread(() -> {
+                mUser = mUserService.register(new User(name, pw));
             });
+
             registerApi.start();
+
+            try {
+                mUserService.mRegisterSem.acquire();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+
+            if (mUser != null) {
+                displayUser(mUser);
+                resetInfo();
+            } else {
+                displayToast(R.string.takenToast);
+            }
         }
     }
 
@@ -114,31 +113,29 @@ public class UserActivity extends AppCompatActivity {
         String name = mUsername.getText().toString();
         String pw = mPassword.getText().toString();
         if (!name.equals("") && !pw.equals("")) {
-            // New thread to make Api GET call
-            Thread loginApi = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        User user = mUserService.login(new User(name, pw));
-                        if (user == null) {
-                            displayToast(R.string.loginFailedToast);
-                        } else if (user.getUsername().equals("")) {
-                            displayToast(R.string.alreadyLoggedInToast);
-                        } else {
-                            displayUser(user);
-                            resetInfo();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            loginApi.start();
-        }
-    }
 
-    public static UserService getUserService() {
-        return mUserService;
+            // New thread to make Api GET call
+            Thread loginApi = new Thread(() -> {
+                mUser = mUserService.login(new User(name, pw));
+            });
+
+            loginApi.start();
+
+            try {
+                mUserService.mLoginSem.acquire();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+
+            if (mUser == null) {
+                displayToast(R.string.loginFailedToast);
+            } else if (mUser.getUsername().equals("")) {
+                displayToast(R.string.alreadyLoggedInToast);
+            } else {
+                displayUser(mUser);
+                resetInfo();
+            }
+        }
     }
 
     private void playGame() {
@@ -190,11 +187,4 @@ public class UserActivity extends AppCompatActivity {
         mUsername.setText("");
         mPassword.setText("");
     }
-
-    public void updateView() {
-        for (User user: mUserService.getUsers()) {
-            displayUser(user);
-        }
-    }
-    //TODO interface stuff
 }

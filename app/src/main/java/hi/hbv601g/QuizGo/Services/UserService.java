@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 import android.app.Service;
 import android.content.Intent;
@@ -30,7 +31,8 @@ import org.json.JSONObject;
 import hi.hbv601g.QuizGo.Entities.User;
 
 public class UserService extends Service {
-    //TODO get database to replace dummy users
+    public Semaphore mLoginSem;
+    public Semaphore mRegisterSem;
     private final String userFile = "/data/user/0/hi.hbv601g.QuizGo/files/users.txt";
     private final int mMinPlayers = 2;
     private final int mMaxPlayers = 4;
@@ -46,6 +48,9 @@ public class UserService extends Service {
 
     public UserService() throws MalformedURLException {
         mUsersPlaying = new ArrayList<>();
+
+        mLoginSem = new Semaphore(0);
+        mRegisterSem = new Semaphore(0);
     }
 
     @Override
@@ -55,9 +60,10 @@ public class UserService extends Service {
     }
 
 
-    public User register(User user) throws IOException {
+    public User register(User user) {
         //TODO replace with database call
         if (usernameTaken(user.getUsername())) {
+            mRegisterSem.release();
             return null;
         }
         User newUser = new User(user.getUsername(),passwordHash(user.getPassword()));
@@ -102,8 +108,11 @@ public class UserService extends Service {
         }
         if (!maxPlayers()) {
             mUsersPlaying.add(newUser);
+            mRegisterSem.release();
+            return newUser;
         }
-        return newUser;
+        mRegisterSem.release();
+        return null;
     }
 
     /**
@@ -112,10 +121,7 @@ public class UserService extends Service {
      * @return user if username and password match, otherwise null
      */
     public User login(User user) {
-        if (user != null &&
-            !user.getUsername().equals("") &&
-            !maxPlayers()
-        ) {
+        if (!maxPlayers()) {
             username = user.getUsername();
             password = user.getPassword();
             try {
@@ -137,7 +143,12 @@ public class UserService extends Service {
                 String jsonUsername = userJson.getString("username");
                 String jsonPassword = userJson.getString("password");
                 if (jsonUsername.equals(username) && jsonPassword.equals(password)) {
+                    if (mUsersPlaying.contains(user)) {
+                        mLoginSem.release();
+                        return new User("",password);
+                    }
                     mUsersPlaying.add(user);
+                    mLoginSem.release();
                     return user;
                 }
             } catch (IOException e) {
@@ -146,6 +157,7 @@ public class UserService extends Service {
                 throw new RuntimeException(e);
             }
         }
+        mLoginSem.release();
         return null;
     }
 
