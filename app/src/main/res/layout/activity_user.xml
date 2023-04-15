@@ -55,6 +55,7 @@
 
     <Button
         android:id="@+id/registerButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:text="@string/register"
@@ -62,17 +63,9 @@
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="@string/playGame"
-        android:textColor="#1824FC"
-        android:textSize="20sp"
-        app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/logoutButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
@@ -82,9 +75,19 @@
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 
+    <Button
+        android:id="@+id/playButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="@string/playGame"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/testButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Testing" />
