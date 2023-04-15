@@ -1,5 +1,6 @@
 package hi.hbv601g.QuizGo.Fragments;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 
@@ -9,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.concurrent.Semaphore;
+
 import hi.hbv601g.QuizGo.View.GameBoard;
 
 public class GameFragment extends Fragment {
+
+    public Semaphore sem;
 
     private static GameBoard mGameBoard;
 
@@ -21,6 +26,7 @@ public class GameFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sem = new Semaphore(0);
         mGameBoard = new GameBoard(getActivity());
     }
 
