@@ -12,7 +12,13 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="166dp" />
+        android:layout_height="45dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/username"
@@ -34,7 +40,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="46dp" />
+        android:layout_height="28dp" />
 
     <Button
         android:id="@+id/loginButton"
@@ -60,15 +66,32 @@
         android:id="@+id/testButton"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
-        android:text="testing"
+        android:text="@string/playGame"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+    <Button
+        android:id="@+id/loginButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:allowUndo="false"
+        android:text="@string/logout"
         android:textColor="#1824FC"
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Testing" />
+
     <Space
         android:layout_width="match_parent"
-        android:layout_height="110dp" />
+        android:layout_height="26dp" />
 
     <LinearLayout
         android:layout_width="340dp"
@@ -80,37 +103,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="User1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:text="User1" />
 
         <TextView
             android:id="@+id/user2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="User2"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:text="User2" />
 
         <TextView
             android:id="@+id/user3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="User3"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:text="User3" />
 
         <TextView
             android:id="@+id/user4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="User4"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:text="User4" />
 
     </LinearLayout>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 
 </LinearLayout>

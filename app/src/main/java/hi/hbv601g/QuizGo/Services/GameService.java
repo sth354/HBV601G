@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import hi.hbv601g.QuizGo.Activities.MenuActivity;
+import hi.hbv601g.QuizGo.Activities.UserActivity;
 import hi.hbv601g.QuizGo.Entities.Question;
 import hi.hbv601g.QuizGo.Entities.User;
 
@@ -34,7 +35,7 @@ public class GameService extends Service {
 
     public GameService() {
         mCurrentPlayer = 0;
-        mUsers = MenuActivity.getUserService().getUsers();
+        mUsers = UserActivity.getUserService().getUsers();
 
         //semaphore for question api-call
         sem = new Semaphore(0);

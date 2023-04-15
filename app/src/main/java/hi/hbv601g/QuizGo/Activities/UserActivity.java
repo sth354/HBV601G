@@ -1,30 +1,28 @@
 package hi.hbv601g.QuizGo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
-
 import hi.hbv601g.QuizGo.Entities.User;
 import hi.hbv601g.QuizGo.Services.UserService;
 import hi.hbv601g.QuizGo.R;
+import android.content.Intent;
+import java.net.MalformedURLException;
+import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
-    private UserService mUserService;
+    private static UserService mUserService;
     private Button mLoginButton;
+    private Button mLogoutButton;
     private Button mRegisterButton;
 
     //TODO delete this
     private Button mTestButton;
-
-
     private EditText mUsername;
     private EditText mPassword;
     private TextView mUser1;
@@ -36,16 +34,25 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-
         //force Portrait layout
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //force Portrait layout
 
-        mUserService = MenuActivity.getUserService();
+        mUsername = findViewById(R.id.username);
+        mPassword = findViewById(R.id.password);
+        mUser1 = findViewById(R.id.user1);
+        mUser2 = findViewById(R.id.user2);
+        mUser3 = findViewById(R.id.user3);
+        mUser4 = findViewById(R.id.user4);
+
+        try {
+            mUserService = new UserService();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
 
         mLoginButton = findViewById(R.id.loginButton);
-        mLoginButton.setOnClickListener(view -> {
-            loginUser();
-        });
+        mLoginButton.setOnClickListener(view -> loginUser());
 
         mRegisterButton = findViewById(R.id.registerButton);
         mRegisterButton.setOnClickListener(view -> {
@@ -76,15 +83,6 @@ public class UserActivity extends AppCompatActivity {
             }
             loginUser();
         });
-
-        mUsername = findViewById(R.id.username);
-        mPassword = findViewById(R.id.password);
-        mUser1 = findViewById(R.id.user1);
-        mUser2 = findViewById(R.id.user2);
-        mUser3 = findViewById(R.id.user3);
-        mUser4 = findViewById(R.id.user4);
-
-        updateView();
     }
 
     public void registerUser() throws IOException {
@@ -96,12 +94,11 @@ public class UserActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        User user = mUserService.register(new User(name,pw));
+                        User user = mUserService.register(new User(name, pw));
                         if (user != null) {
                             displayUser(user);
                             resetInfo();
-                        }
-                        else {
+                        } else {
                             displayToast(R.string.takenToast);
                         }
                     } catch (Exception e) {
@@ -122,14 +119,12 @@ public class UserActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        User user = mUserService.login(new User(name,pw));
+                        User user = mUserService.login(new User(name, pw));
                         if (user == null) {
                             displayToast(R.string.loginFailedToast);
-                        }
-                        else if (user.getUsername().equals("")) {
+                        } else if (user.getUsername().equals("")) {
                             displayToast(R.string.alreadyLoggedInToast);
-                        }
-                        else {
+                        } else {
                             displayUser(user);
                             resetInfo();
                         }
@@ -142,28 +137,17 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
-    private void logout(int n) {
-        mUserService.logout(n);
-        switch (n) {
-            case 0:
-                mUser1.setText(mUser2.getText());
-                mUser2.setText(mUser3.getText());
-                mUser3.setText(mUser4.getText());
-                break;
-            case 1:
-                mUser2.setText(mUser3.getText());
-                mUser3.setText(mUser4.getText());
-                break;
-            case 2:
-                mUser3.setText(mUser4.getText());
-                break;
-            case 3:
-                //nothing
-                break;
-            default:
-                System.out.println("No one is logged in (this should never print)");
+    public static UserService getUserService() {
+        return mUserService;
+    }
+
+    private void playGame() {
+        if (mUserService.gameReady()) {
+            Intent intent = new Intent(this, GameActivity.class);
+            startActivity(intent);
+        } else {
+            displayToast(R.string.minPlayersToast);
         }
-        mUser4.setText("");
     }
 
     private void displayToast(int toast) {
@@ -183,9 +167,6 @@ public class UserActivity extends AppCompatActivity {
                 break;
             case 4:
                 mUser4.setText(user.toString());
-                break;
-            default:
-                System.out.println("Max players reached");
                 break;
         }
     }
