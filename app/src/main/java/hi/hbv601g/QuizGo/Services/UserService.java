@@ -161,8 +161,10 @@ public class UserService extends Service {
         return null;
     }
 
-    public void logout(int n) {
-        mUsersPlaying.remove(n);
+    public void logout() {
+        if (mUsersPlaying.size() != 0) {
+            mUsersPlaying.remove(mUsersPlaying.size() - 1);
+        }
     }
 
     public List<User> getUsers() {

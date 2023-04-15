@@ -62,10 +62,12 @@ public class UserActivity extends AppCompatActivity {
         mUser4 = findViewById(R.id.user4);
         mLoginButton = findViewById(R.id.loginButton);
         mRegisterButton = findViewById(R.id.registerButton);
+        mLogoutButton = findViewById(R.id.logoutButton);
         mPlayButton = findViewById(R.id.playButton);
 
         mLoginButton.setOnClickListener(view -> loginUser());
         mRegisterButton.setOnClickListener(view -> registerUser());
+        mLogoutButton.setOnClickListener(view -> logout());
         mPlayButton.setOnClickListener(view -> playGame());
 
         //TODO delete this (for testing only)
@@ -138,6 +140,24 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    private void logout() {
+        switch (currentUser()) {
+            case 2:
+                mUser1.setText("");
+                break;
+            case 3:
+                mUser2.setText("");
+                break;
+            case 4:
+                mUser3.setText("");
+                break;
+            case -1:
+                mUser4.setText("");
+                break;
+        }
+        mUserService.logout();
+    }
+
     private void playGame() {
         if (mUserService.gameReady()) {
             Intent intent = new Intent(this, GameActivity.class);
@@ -178,8 +198,11 @@ public class UserActivity extends AppCompatActivity {
         else if (mUser3.getText().equals("")) {
             return 3;
         }
-        else {
+        else if (mUser4.getText().equals("")) {
             return 4;
+        }
+        else {
+            return -1;
         }
     }
 
