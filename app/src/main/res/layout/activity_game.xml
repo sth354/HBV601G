@@ -69,7 +69,7 @@
     <Button
         android:id="@+id/seeAnswerButton"
         android:layout_width="302dp"
-        android:layout_height="48dp"
+        android:layout_height="70dp"
         android:text="@string/seeAnswer_button"
         app:backgroundTint="#FF9A16" />
 

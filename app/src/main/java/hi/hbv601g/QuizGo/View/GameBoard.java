@@ -40,13 +40,11 @@ public class GameBoard extends View {
         float x = mCircleCoordinates[location][0];
         float y = mCircleCoordinates[location][1];
         circles[location] = new Circle(x, y, mRadius, color);
-        Log.d("Gameboard","Adding circle at location: " + location);
     }
 
     public void clear() {
         circles = new Circle[16];
         Arrays.fill(circles, null);
-        Log.d("Gameboard","Clearing");
     }
 
     public GameBoard(Context context) {
@@ -76,11 +74,9 @@ public class GameBoard extends View {
         // Draw the background image on the canvas
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
 
-        for (int i = 0; i < circles.length; i++) {
-            Circle circle = circles[i];
+        for (Circle circle : circles) {
             if (circle != null) {
                 canvas.drawCircle(circle.x, circle.y, circle.radius, circle.color);
-                Log.d("Gameboard","Drawing circle at position: " + i);
             }
         }
     }

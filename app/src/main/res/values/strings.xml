@@ -3,11 +3,9 @@
 
     <!-- Menu strings -->
     <string name="playGame" translatable="false">Play Game</string>
-    <string name="loadGame" translatable="false">Load Game</string>
-    <string name="choosePlayers" translatable="false">Choose Players</string>
-    <string name="viewScores" translatable="false">View Scores</string>
-
-    <!-- Choose players strings -->
+    <string name="easyText" translatable="false">Easy</string>
+    <string name="mediumText" translatable="false">Medium</string>
+    <string name="hardText" translatable="false">Hard</string>
     <string name="login" translatable="false">Login</string>
     <string name="register" translatable="false">Create user</string>
     <string name="logout" translatable="false">Logout</string>
@@ -28,5 +26,6 @@
     <string name="loginFailedToast" translatable="false">Incorrect username or password</string>
     <string name="alreadyLoggedInToast" translatable="false">Already logged in</string>
     <string name="minPlayersToast" translatable="false">At least 2 players needed to play</string>
+    <string name="maxPlayerToast" translatable="false">Maximum player count reached</string>
 
 </resources>
