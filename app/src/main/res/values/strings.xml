@@ -3,11 +3,7 @@
 
     <!-- Menu strings -->
     <string name="playGame" translatable="false">Play Game</string>
-    <string name="loadGame" translatable="false">Load Game</string>
-    <string name="choosePlayers" translatable="false">Choose Players</string>
-    <string name="viewScores" translatable="false">View Scores</string>
-
-    <!-- Choose players strings -->
+    <string name="chooseDifficulty" translatable="false">Choose difficulty</string>
     <string name="login" translatable="false">Login</string>
     <string name="register" translatable="false">Create user</string>
     <string name="logout" translatable="false">Logout</string>

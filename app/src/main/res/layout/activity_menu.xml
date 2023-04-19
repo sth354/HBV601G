@@ -20,6 +20,30 @@
         android:layout_height="165dp"
         app:srcCompat="@drawable/logo" />
 
+    <Button
+        android:id="@+id/playButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="@string/playGame"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+    <Button
+        android:id="@+id/difficultyButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="@string/chooseDifficulty"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="254dp"
@@ -76,20 +100,9 @@
         app:backgroundTint="#FF9A16" />
 
     <Button
-        android:id="@+id/playButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="@string/playGame"
-        android:textColor="#1824FC"
-        android:textSize="20sp"
-        app:backgroundTint="#FF9A16" />
-
-
-    <Button
         android:id="@+id/testButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="41dp"
         android:text="Testing" />
 
     <Space
