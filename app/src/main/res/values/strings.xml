@@ -3,7 +3,9 @@
 
     <!-- Menu strings -->
     <string name="playGame" translatable="false">Play Game</string>
-    <string name="chooseDifficulty" translatable="false">Choose difficulty</string>
+    <string name="easyText" translatable="false">Easy</string>
+    <string name="mediumText" translatable="false">Medium</string>
+    <string name="hardText" translatable="false">Hard</string>
     <string name="login" translatable="false">Login</string>
     <string name="register" translatable="false">Create user</string>
     <string name="logout" translatable="false">Logout</string>

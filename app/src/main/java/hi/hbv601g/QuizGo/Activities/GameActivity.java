@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -40,7 +39,6 @@ public class GameActivity extends AppCompatActivity {
     //interface variables
     private GameFragment mGameFragment;
     private TextView mQuestion;
-    private Button mSkip;
     private Button mRight;
     private Button mWrong;
     private Button mSeeAnswer;
@@ -65,6 +63,13 @@ public class GameActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .add(R.id.fragment_container, mGameFragment.getClass(), null)
                     .commit();
+
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                mGameService.setDifficulty(1);
+            } else {
+                mGameService.setDifficulty(extras.getInt("difficulty"));
+            }
         }
 
         setContentView(R.layout.activity_game);
@@ -74,7 +79,6 @@ public class GameActivity extends AppCompatActivity {
 
         //initializing view objects
         mQuestion = findViewById(R.id.question);
-        //mSkip = findViewById(R.id.skipButton);
         mRight = findViewById(R.id.rightButton);
         mWrong = findViewById(R.id.wrongButton);
         mSeeAnswer = findViewById(R.id.seeAnswerButton);
@@ -88,7 +92,6 @@ public class GameActivity extends AppCompatActivity {
         mUser4Score = findViewById(R.id.user4Score);
 
         //listeners
-        //mSkip.setOnClickListener(view -> skipQuestion());
         mSeeAnswer.setOnClickListener(view -> setSeeAnswer());
         mRight.setOnClickListener(view -> correct());
         mWrong.setOnClickListener(view -> incorrect());
@@ -96,7 +99,7 @@ public class GameActivity extends AppCompatActivity {
         //initialize users
         updateUsers(-1);
 
-        //initialize gameboard
+        //initialize game-board
         mGameService.initColors();
 
         startDialog();
@@ -165,7 +168,6 @@ public class GameActivity extends AppCompatActivity {
     private void playingLocation() {
         User player = mGameService.currentPlayer();
         mGameFragment.setPlayer(player.getColor(), player.getScore());
-        Log.d("Placement","Playing: " + player.getScore());
     }
 
     /**
@@ -178,7 +180,6 @@ public class GameActivity extends AppCompatActivity {
         for (User player: players) {
             if (!player.equals(currentPlayer)) {
                 mGameFragment.setPlayer(player.getColor(), player.getScore());
-                Log.d("Placement","Previous: " + player.getScore());
             }
         }
     }
@@ -205,7 +206,7 @@ public class GameActivity extends AppCompatActivity {
 
     /**
      * Displays the current question.
-     * (also checks for multiple choice quesions)
+     * (also checks for multiple choice questions)
      */
     private void setQuestion() {
         Question question = mQuestions[mCurrentQuestion];
@@ -221,14 +222,6 @@ public class GameActivity extends AppCompatActivity {
             mCurrentQuestion++;
             updateQuestion();
         }
-    }
-
-    /**
-     * Skips the current question.
-     */
-    private void skipQuestion() {
-        mCurrentQuestion++;
-        updateQuestion();
     }
 
     //Button handlers:
@@ -314,7 +307,7 @@ public class GameActivity extends AppCompatActivity {
                             mUser4.setTypeface(null, Typeface.NORMAL);
                             break;
                         default:
-                            System.out.println("errrorrrrr");
+                            System.out.println("error");
                     }
                     mUser1.setTypeface(null, Typeface.BOLD);
                     break;
@@ -334,7 +327,7 @@ public class GameActivity extends AppCompatActivity {
                     mUser4.setTypeface(null, Typeface.BOLD);
                     break;
                 default:
-                    System.out.println("errrorrrrr");
+                    System.out.println("error");
             }
         }
     }

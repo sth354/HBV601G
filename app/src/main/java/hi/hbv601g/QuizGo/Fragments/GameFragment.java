@@ -1,6 +1,5 @@
 package hi.hbv601g.QuizGo.Fragments;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 

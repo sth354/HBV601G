@@ -28,9 +28,13 @@ public class GameService extends Service {
     //variables
     public Semaphore sem;
     private int mCurrentPlayer;
+    private String mDifficulty;
 
     //constants
     private final List<User> mUsers;
+    private final String mEASY = "easy";
+    private final String mMEDIUM = "medium";
+    private final String mHARD = "hard";
 
     public GameService() {
         mCurrentPlayer = 0;
@@ -63,12 +67,30 @@ public class GameService extends Service {
     }
 
     /**
+     * Sets the question difficulty.
+     * @param difficulty the difficulty to set
+     */
+    public void setDifficulty(int difficulty) {
+        switch (difficulty) {
+            case 0:
+                mDifficulty = mEASY;
+                break;
+            case 2:
+                mDifficulty = mHARD;
+                break;
+            default:
+                mDifficulty = mMEDIUM;
+                break;
+        }
+    }
+
+    /**
      * Gets question from a trivia-api.
      * @return Array of 10 questions.
      */
     public Question[] getQuestions() throws IOException {
         // Make the API call and retrieve the JSON data
-        String apiUrl = "https://the-trivia-api.com/api/questions?difficulty=easy";
+        String apiUrl = "https://the-trivia-api.com/api/questions?difficulty=" + mDifficulty;
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -82,7 +104,7 @@ public class GameService extends Service {
             JsonObject questionObject = questionsArray.get(i).getAsJsonObject();
             String question = questionObject.get("question").getAsString();
             String answer = questionObject.get("correctAnswer").getAsString();
-            Question mTempQuestion = new Question(i,0,question,answer,false);
+            Question mTempQuestion = new Question(question, answer);
             mQuestions[i] = mTempQuestion;
         }
         sem.release();

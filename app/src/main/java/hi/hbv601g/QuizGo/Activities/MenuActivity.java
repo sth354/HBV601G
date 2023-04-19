@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +26,11 @@ public class MenuActivity extends AppCompatActivity {
     private User mUser;
 
     //interface variables
+    private Button mPlayButton;
+    private SeekBar mDifficultyBar;
     private Button mLoginButton;
     private Button mLogoutButton;
     private Button mRegisterButton;
-    private Button mPlayButton;
     private Button mTestButton;  //TODO delete this
     private EditText mUsername;
     private EditText mPassword;
@@ -55,16 +57,17 @@ public class MenuActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //initializing view objects
+        mPlayButton = findViewById(R.id.playButton);
+        mDifficultyBar = findViewById(R.id.difficultyBar);
+        mLoginButton = findViewById(R.id.loginButton);
+        mRegisterButton = findViewById(R.id.registerButton);
+        mLogoutButton = findViewById(R.id.logoutButton);
         mUsername = findViewById(R.id.username);
         mPassword = findViewById(R.id.password);
         mUser1 = findViewById(R.id.user1);
         mUser2 = findViewById(R.id.user2);
         mUser3 = findViewById(R.id.user3);
         mUser4 = findViewById(R.id.user4);
-        mLoginButton = findViewById(R.id.loginButton);
-        mRegisterButton = findViewById(R.id.registerButton);
-        mLogoutButton = findViewById(R.id.logoutButton);
-        mPlayButton = findViewById(R.id.playButton);
 
         //listeners
         mLoginButton.setOnClickListener(view -> loginUser());
@@ -96,6 +99,7 @@ public class MenuActivity extends AppCompatActivity {
     private void playGame() {
         if (mUserService.gameReady()) {
             Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("difficulty", mDifficultyBar.getProgress());
             startActivity(intent);
         } else {
             displayToast(R.string.minPlayersToast);
@@ -191,11 +195,15 @@ public class MenuActivity extends AppCompatActivity {
                     ie.printStackTrace();
                 }
 
-                if (mUser != null) {
+                if (mUser == null) {
+                    displayToast(R.string.takenToast);
+                }
+                else if (mUser.getUsername().equals("")) {
+                    displayToast(R.string.alreadyLoggedInToast);
+                }
+                else {
                     displayUser(mUser);
                     resetInfo();
-                } else {
-                    displayToast(R.string.takenToast);
                 }
             }
         }
