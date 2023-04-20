@@ -49,7 +49,7 @@ public class GameBoard extends View {
 
     public GameBoard(Context context) {
         super(context);
-        backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hrings);
+        backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.hringur);
         circles = new Circle[16];
     }
 

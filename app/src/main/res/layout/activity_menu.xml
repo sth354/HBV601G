@@ -16,62 +16,13 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="match_parent"
-        android:layout_height="165dp"
+        android:layout_width="453dp"
+        android:layout_height="195dp"
         app:srcCompat="@drawable/logo" />
 
-    <Button
-        android:id="@+id/playButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="@string/playGame"
-        android:textColor="#1824FC"
-        android:textSize="20sp"
-        app:backgroundTint="#FF9A16" />
-
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-    <LinearLayout
-        android:layout_width="256dp"
-        android:layout_height="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/easyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/easyText"/>
-
-        <TextView
-            android:id="@+id/mediumText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="75dp"
-            android:text="@string/mediumText"/>
-
-        <TextView
-            android:id="@+id/hardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="67dp"
-            android:text="@string/hardText"/>
-
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/difficultyBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="256dp"
-        android:layout_height="20dp"
-        android:max="2"
-        android:progress="1" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        android:layout_height="25dp" />
 
     <EditText
         android:id="@+id/username"
@@ -93,6 +44,46 @@
 
     <Space
         android:layout_width="match_parent"
+        android:layout_height="33dp" />
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/easyText"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:text="@string/easyText"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/mediumText"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:text="@string/mediumText"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/hardText"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:text="@string/hardText"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/difficultyBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="350dp"
+        android:layout_height="18dp"
+        android:max="2"
+        android:progress="1" />
+
+    <Space
+        android:layout_width="match_parent"
         android:layout_height="28dp" />
 
     <Button
@@ -102,6 +93,16 @@
         android:layout_height="wrap_content"
         android:allowUndo="false"
         android:text="@string/login"
+        android:textColor="#1824FC"
+        android:textSize="20sp"
+        app:backgroundTint="#FF9A16" />
+
+    <Button
+        android:id="@+id/playButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="@string/playGame"
         android:textColor="#1824FC"
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
@@ -128,15 +129,9 @@
         android:textSize="20sp"
         app:backgroundTint="#FF9A16" />
 
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="match_parent"
-        android:layout_height="41dp"
-        android:text="Testing" />
-
     <Space
         android:layout_width="match_parent"
-        android:layout_height="26dp" />
+        android:layout_height="20dp" />
 
     <LinearLayout
         android:layout_width="340dp"

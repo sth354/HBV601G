@@ -76,17 +76,17 @@ public class MenuActivity extends AppCompatActivity {
         mPlayButton.setOnClickListener(view -> playGame());
 
         //TODO delete this (for testing only)
-        mTestButton = findViewById(R.id.testButton);
-        mTestButton.setOnClickListener(view -> {
-            mUsername.setText("Play1");
-            mPassword.setText("password");
-            registerUser();
-            loginUser();
-            mUsername.setText("Play2");
-            mPassword.setText("password");
-            registerUser();
-            loginUser();
-        });
+       // mTestButton = findViewById(R.id.testButton);
+        //mTestButton.setOnClickListener(view -> {
+        //    mUsername.setText("Play1");
+          //  mPassword.setText("password");
+            //registerUser();
+          //  loginUser();
+          //  mUsername.setText("Play2");
+         //   mPassword.setText("password");
+          //  registerUser();
+         //   loginUser();
+       // });
 
         updateView();
     }

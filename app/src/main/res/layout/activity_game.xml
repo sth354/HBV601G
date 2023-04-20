@@ -10,19 +10,27 @@
     android:gravity="center">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="143dp"
+        android:layout_width="464dp"
+        android:layout_height="185dp"
         app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/question"
-        android:layout_width="321dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:padding="24dp"
         android:textColor="#1824FC"
         android:textSize="16sp"
         android:textStyle="bold"
         tools:text="Question" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:name="hi.hbv601g.QuizGo.Fragments.GameFragment"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        tools:context=".GameActivity"
+        tools:layout="@layout/fragment_game" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,42 +43,40 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/rightButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/right_button"
-            app:backgroundTint="#FF9A16" />
-
-        <Button
             android:id="@+id/wrongButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/wrong_button"
+            android:textColor="#1824FC"
+            android:textSize="18sp"
+            app:backgroundTint="#FF9A16" />
+
+        <Button
+            android:id="@+id/rightButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/right_button"
+            android:textColor="#1824FC"
+            android:textSize="18sp"
             app:backgroundTint="#FF9A16" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
     </LinearLayout>
-
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
-        android:name="hi.hbv601g.QuizGo.Fragments.GameFragment"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        tools:context=".GameActivity"
-        tools:layout="@layout/fragment_game" />
 
 
     <Button
         android:id="@+id/seeAnswerButton"
-        android:layout_width="302dp"
+        android:layout_width="298dp"
         android:layout_height="70dp"
         android:text="@string/seeAnswer_button"
+        android:textColor="#1824FC"
+        android:textSize="18sp"
         app:backgroundTint="#FF9A16" />
 
     <LinearLayout
