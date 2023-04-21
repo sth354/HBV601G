@@ -54,7 +54,7 @@ public class UserService extends Service {
 
     public User register(User user) {
         if (mUsersPlaying.contains(user)) {
-            mLoginSem.release();
+            mRegisterSem.release();
             return new User("","");
         }
 
@@ -86,7 +86,8 @@ public class UserService extends Service {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                mRegisterSem.release();
+                return null;
             }
             mUsersPlaying.add(user);
             mRegisterSem.release();
