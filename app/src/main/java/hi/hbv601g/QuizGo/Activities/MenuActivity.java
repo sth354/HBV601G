@@ -14,6 +14,8 @@ import hi.hbv601g.QuizGo.Services.UserService;
 import hi.hbv601g.QuizGo.R;
 import android.content.Intent;
 import java.net.MalformedURLException;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 public class MenuActivity extends AppCompatActivity {
     //public UserService
@@ -181,8 +183,9 @@ public class MenuActivity extends AppCompatActivity {
     private void registerUser() {
         if (canLogin()) {
             String name = mUsername.getText().toString();
-            String pw = mPassword.getText().toString();
-            if (!name.equals("") && !pw.equals("")) {
+            // String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+            String pw = BCrypt.hashpw((mPassword.getText().toString()), BCrypt.gensalt());
+            if (!name.equals("") && !BCrypt.checkpw("", pw)) {
 
                 // New thread to make Api POST call
                 Thread registerApi = new Thread(() -> mUser = mUserService.register(new User(name, pw)));
