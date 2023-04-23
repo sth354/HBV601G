@@ -21,6 +21,7 @@ import android.os.IBinder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import hi.hbv601g.QuizGo.Entities.User;
 
@@ -129,7 +130,7 @@ public class UserService extends Service {
                 JSONObject userJson = jsonArray.getJSONObject(0);
                 String jsonUsername = userJson.getString("username");
                 String jsonPassword = userJson.getString("password");
-                if (jsonUsername.equals(username) && jsonPassword.equals(password)) {
+                if (jsonUsername.equals(username) && BCrypt.checkpw(password, jsonPassword)) {
                     mUsersPlaying.add(user);
                     mLoginSem.release();
                     return user;
